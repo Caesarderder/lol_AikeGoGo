@@ -39,9 +39,7 @@ public class HomePanel : ViewBase
         }));
         btn_start.OnClickAsObservable().Subscribe(async x => {
             await Manager<UIManager>.Inst.ShowUI<GamePlayPanel>();  //动态加载GamePlayPanel
-            Manager<UIManager>.Inst.ShowUI<GameRunePanel>();  //动态加载GameRunePanel
-            _ = Manager<ActManager>.Inst.LoadAct<KeyboardWorldAct>();
-            _ = Manager<ActManager>.Inst.LoadAct<CursorWorldAct>();
+            _ = Manager<ActManager>.Inst.LoadAct<GameAct>();
 
         });
 

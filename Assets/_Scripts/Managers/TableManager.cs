@@ -22,8 +22,8 @@ public class TableManager
         AudioConfig.Init();
 
 
-        CharacterConfig = await Addressables.LoadAssetAsync<CharacterConfig_SO>(typeof(CharacterConfig).ToString()).Task;
-        CharacterConfig.Init();
+        //CharacterConfig = await Addressables.LoadAssetAsync<CharacterConfig_SO>(typeof(CharacterConfig).ToString()).Task;
+        //CharacterConfig.Init();
     }
 
 }
