@@ -27,7 +27,7 @@ namespace FSM
         }
         public virtual void GroundCheck()
         {
-            var hit = Physics2D.Raycast(transform.position, Vector2.down, _groundCheckDis, _wahtIsGround);
+            var hit = Physics.Raycast(transform.position, Vector2.down, _groundCheckDis, _wahtIsGround);
 
             if (hit)
             {

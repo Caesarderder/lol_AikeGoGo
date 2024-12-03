@@ -63,11 +63,11 @@ namespace FSM
                 var dir = sense.Player.transform.position - boss.transform.position;
                 if(dir.x>0f)
                 {
-                    movement.SetMoveSpeed(data.MoveSpeed);
+                    movement.SetTargetMoveSpeed(data.MoveSpeed);
                 }
                 if (dir.x < 0f)
                 {
-                    movement.SetMoveSpeed(-data.MoveSpeed);
+                    movement.SetTargetMoveSpeed(-data.MoveSpeed);
                 }
                 movement.HorizontalMove();
             }

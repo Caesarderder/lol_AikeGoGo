@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Init : MonoBehaviour
 {
@@ -8,15 +9,19 @@ public class Init : MonoBehaviour
     [SerializeField]
     List<GameObject> _initGos;
 
+    public bool QuickStart=false;
+
     #region Methods
     public async void Awake()
     {
+        await SceneManager.UnloadSceneAsync(SceneManager.GetSceneAt(1));
         await ContainerInit();
-        LoadMainAct();
         _initGos.Add(gameObject);
         foreach ( GameObject go in _initGos ) {
             Destroy(go);
         }
+        //if( !QuickStart ) 
+        LoadMainAct();
     }
 
     private async Task ContainerInit()
@@ -57,7 +62,8 @@ public class Init : MonoBehaviour
 
     private void LoadMainAct()
     {
-        _=Manager<ActManager>.Inst.LoadAct<HomeAct>();
+        _=Manager<ActManager>.Inst.LoadAct<GameAct>();
+        _=Manager<UIManager>.Inst.ShowUI<GamePlayPanel>();
     }
 
     #endregion

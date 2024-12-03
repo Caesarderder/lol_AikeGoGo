@@ -79,7 +79,7 @@ namespace FSM
                     speed =- data.MoveSpeed;
                 }
 
-                movement.SetMoveSpeed(speed);
+                movement.SetTargetMoveSpeed(speed);
                 movement.HorizontalMove();
             }
             else

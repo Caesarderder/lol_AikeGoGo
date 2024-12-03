@@ -5,6 +5,13 @@ using System;
 public class InputManager
 {
     public static string MOVE = "Move";
+    public static string Jump= "Jump";
+    public static string Crouch= "Crouch";
+    public static string NormalAttack= "NormalAttack";
+    public static string Spell1= "Spell1";
+    public static string Spell2= "Spell2";
+    public static string Spell3= "Spell3";
+
     public static string INTERACT = "Interact";
     public static string CURSORLEFT = "CursorLeft";
     public static string CURSORRIGHT = "CursorRight";

@@ -11,6 +11,7 @@ namespace FSM
 
         private void Awake()
         {
+            CoreComponents=GetComponentsInChildren<CoreComponent>().ToList();
         }
 
         public void LogicUpdate()

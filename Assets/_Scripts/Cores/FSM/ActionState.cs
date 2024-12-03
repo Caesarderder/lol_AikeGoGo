@@ -2,12 +2,12 @@ using UnityEditor;
 
 namespace FSM
 {
-    public class AbilityState:State
+    public class ActionState:State
     {
         public State NormalState;
         public bool isAbilityDone;
 
-        public AbilityState(Entity entity,State NormalState) : base(entity)
+        public ActionState(Entity entity,State NormalState) : base(entity)
         {
             this.NormalState = NormalState;
         }
@@ -34,6 +34,7 @@ namespace FSM
         }
         public override void AnimationFinishedTrigger()
         {
+            isAbilityDone = true;
 
         }
     }

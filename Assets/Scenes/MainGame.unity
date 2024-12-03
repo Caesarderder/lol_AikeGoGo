@@ -42,7 +42,8 @@ RenderSettings:
 --- !u!157 &3
 LightmapSettings:
   m_ObjectHideFlags: 0
-  serializedVersion: 12
+  serializedVersion: 13
+  m_BakeOnSceneLoad: 0
   m_GISettings:
     serializedVersion: 2
     m_BounceScale: 1
@@ -269,6 +270,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _initGos:
   - {fileID: 1891086650}
+  QuickStart: 1
 --- !u!4 &7013092431869351903
 Transform:
   m_ObjectHideFlags: 0

@@ -2,7 +2,7 @@ using UnityEditor;
 
 namespace FSM
 {
-    public class PlayerCombatState: AbilityState 
+    public class PlayerCombatState: ActionState 
     {
         public ICombatStrategy combatStrategy;
         private PlayerInputHandler _input;
@@ -35,10 +35,10 @@ namespace FSM
         {
             base.LogicUpdate();
             combatStrategy.Charging();
-            if(!_input.LeftButtonDown)
-            {
-                combatStrategy.ApplyCombat();
-            }
+            //if(!_input.LeftButtonDown)
+            //{
+            //    combatStrategy.ApplyCombat();
+            //}
         }
         public override void PhysicsUpdate()
         {

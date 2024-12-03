@@ -6,52 +6,44 @@ public class PlayerInputHandler : MonoBehaviour
 {
     public float Move;
     public float MoveNormalized ;
+    public bool MoveInput;
+
     public bool Jump;
     public bool Crouch;
-    public bool Dash;
-    public bool Interact;
-    public bool LeftButtonDown;
 
-    private void Update()
+    public bool NormalAttack;
+
+    public bool Spell1;
+    public bool Spell2;
+    public bool Spell3;
+
+    private void Start()
     {
-        Move = Input.GetAxis("Horizontal");
-        CheckKeyInput(ref Jump, KeyCode.Space);
-        CheckKeyInput(ref Dash, KeyCode.LeftShift);
-        CheckKeyInput(ref Interact, KeyCode.E);
-        CheckKeyInput(ref Crouch, KeyCode.S);
-        CheckButtonInput(ref LeftButtonDown, 0);
-        CheckMoveInput();
+        var inputManager=Manager<InputManager>.Inst;
+
+        inputManager.InputValueBinding<Vector2>(InputManager.MOVE, (isOn, value) =>
+        {
+            MoveInput=isOn;
+            Move = value.x;
+            if ( Move>0f )
+            {
+                MoveNormalized = 1;
+            }
+            else if ( Move<0f )
+            {
+                MoveNormalized = -1;
+            }
+            else { MoveNormalized = 0; }
+        });
+
+        inputManager.InputButtonBinding(InputManager.Jump, isOn => Jump= isOn);
+        inputManager.InputButtonBinding(InputManager.Crouch, isOn => Crouch= isOn);
+
+        inputManager.InputButtonBinding(InputManager.NormalAttack, isOn => NormalAttack= isOn);
+
+        inputManager.InputButtonBinding(InputManager.Spell1, isOn => Spell1= isOn);
+        inputManager.InputButtonBinding(InputManager.Spell2, isOn => Spell2= isOn);
+        inputManager.InputButtonBinding(InputManager.Spell3, isOn => Spell3= isOn);
     }
 
-    public void CheckMoveInput()
-    {
-        if(Input.GetKey(KeyCode.A))
-        {
-            MoveNormalized= -1;
-        }
-        else if(Input.GetKey(KeyCode.D))
-        {
-            MoveNormalized= 1;
-        }
-        else { MoveNormalized = 0; }
-    }
-    public void CheckKeyInput(ref bool value,KeyCode keyCode)
-    {
-        if (Input.GetKeyDown(keyCode))
-        {
-            value = true;
-        }
-        if(Input.GetKeyUp(keyCode))
-            value = false;
-    }
-
-    public void CheckButtonInput(ref bool value, int buttonTpye)
-    {
-        if (Input.GetMouseButtonDown(buttonTpye))
-        {
-            value = true;
-        }
-        if(Input.GetMouseButtonUp(buttonTpye))
-            value = false;
-    }
 }

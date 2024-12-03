@@ -35,10 +35,19 @@ namespace FSM
         {
             base.Enter();
             movement.CanMove=true;
-            player.Animator.SetTrigger(_animationName);
+            //player.Animator.SetTrigger(_animationName);
 
             HorizontalMove();
             Jump();
+            if(inputHandler.Crouch)
+            {
+                player.StateMachine.ChangeState(player.CrouchState);
+            }
+            if(inputHandler.NormalAttack)
+            {
+
+                player.StateMachine.ChangeState(player.NormalAttackState);
+            }
         }
 
         public override void PhysicsUpdate()
@@ -51,7 +60,20 @@ namespace FSM
         private void HorizontalMove()
         {
             var move = inputHandler.MoveNormalized;
-            movement.SetMoveSpeed(move * data.MoveSpeed);
+            var targetSpeed = 0f;
+            if(move==1)
+            {
+                targetSpeed = 1f;
+            }
+            else if(move==-1)
+            {
+                targetSpeed = 0f;
+            }
+            else
+            {
+                targetSpeed = 0.5f;
+            }
+            movement.SetTargetMoveSpeed(targetSpeed);
             movement.HorizontalMove();
         }
 
@@ -96,15 +118,21 @@ namespace FSM
 
         public void CheckIfTransition()
         {
-            if (inputHandler.Crouch)
+            if ( inputHandler.Crouch )
                 player.StateMachine.ChangeState(player.CrouchState);
-            else if (inputHandler.LeftButtonDown)
+            if ( inputHandler.NormalAttack )
             {
-                var combatStrategy = combat.ActivateCombatStrategy(typeof(PlayerFireBallCombat).ToString());
 
-                player.CombatState.combatStrategy = combatStrategy; 
-                player.StateMachine.ChangeState(player.CombatState);
+                player.StateMachine.ChangeState(player.NormalAttackState);
             }
+
+            //else if (inputHandler.LeftButtonDown)
+            //{
+            //    var combatStrategy = combat.ActivateCombatStrategy(typeof(PlayerFireBallCombat).ToString());
+
+            //    player.CombatState.combatStrategy = combatStrategy; 
+            //    player.StateMachine.ChangeState(player.CombatState);
+            //}
         }
     }
 }

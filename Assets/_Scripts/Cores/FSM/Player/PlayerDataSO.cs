@@ -7,6 +7,7 @@ public class PlayerDataSO: EntityDataSO
     public float MoveSpeed;
     public float JumpSpeed;
     public int JumpCount=2;
+    public float a = 1f;
 
     [Header("CrouchState")]
     public float CrouchMoveSpeed = 5f;

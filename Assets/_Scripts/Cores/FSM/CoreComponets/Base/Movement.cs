@@ -5,11 +5,15 @@ namespace FSM
 {
     public class Movement:CoreComponent 
     {
-        protected Rigidbody2D Rb;
+        protected Rigidbody Rb;
        
 
         public Vector2 TargetPos;
-        public Vector2 MoveSpeed;
+
+        public float TargetMoveSpeed;
+        public float CurMoveSpeed;
+        public float VerticalSpeed;
+        public float a;
         public bool CanMove;
 
         public bool IsMoving;
@@ -21,7 +25,7 @@ namespace FSM
         protected override void Awake()
         {
             base.Awake();
-            Rb=GetComponentInParent<Rigidbody2D>();
+            Rb=GetComponentInParent<Rigidbody>();
             _isFacingRight = 1;
         }
 
@@ -40,22 +44,18 @@ namespace FSM
         //��Ҫ��State���ã�ִ���ƶ�----�����ƶ������Զ�ת��
         public virtual void HorizontalMove()
         {
-            if (!CanMove)
-                return;
-            if (MoveSpeed.sqrMagnitude > 0)
-            {
-                IsMoving = true;
-                if(_isFacingRight*MoveSpeed.x<0)
-                {
-                    Flip();
-                }
-                Rb.linearVelocity = new Vector2(MoveSpeed.x,Rb.linearVelocity.y);
-            }
-            else
-            {
+            //if (!CanMove)
+            //    return;
+            //if (Mathf.Abs(Speed)> 0)
+            //{
+            //    IsMoving = true;
+            //    //Rb.linearVelocity = new Vector2(MoveSpeed.x,Rb.linearVelocity.y);
+            //}
+            //else
+            //{
 
-                IsMoving = false;
-            }
+            //    IsMoving = false;
+            //}
 
         }
         public void Flip()
@@ -63,13 +63,13 @@ namespace FSM
             _isFacingRight*=-1;
             Entity.transform.Rotate(new Vector3(0f, 180f, 0f));
         }
-        public virtual void SetMoveSpeed(float horitalSpeed)
+        public virtual void SetTargetMoveSpeed(float horitalSpeed)
         {
-            MoveSpeed = new Vector2(horitalSpeed,Rb.linearVelocity.y);
+            //MoveSpeed = new Vector2(horitalSpeed,Rb.linearVelocity.y);
         }
         public virtual void SetMoveSpeed(Vector2 velocity)
         {
-            MoveSpeed = velocity;
+            //MoveSpeed = velocity;
         }
         public virtual void SetTargetPos(Vector2 targetPos)
         {
@@ -90,7 +90,7 @@ namespace FSM
                 }
                     
                 IsMoving = true;
-                Rb.linearVelocity = (TargetPos -(Vector2) Entity.transform.position).normalized*MoveSpeed.magnitude; 
+                //Rb.linearVelocity = (TargetPos -(Vector2) Entity.transform.position).normalized*MoveSpeed.magnitude; 
             }
         }
         

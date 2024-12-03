@@ -9,7 +9,9 @@ namespace FSM
         //State
         public PlayerNormalState NormalState;
         public PlayerCrouchState CrouchState;
-        public PlayerCombatState CombatState;
+        //public PlayerCombatState CombatState;
+        public PlayerNormalAttackState NormalAttackState;
+
         //Cores
         public PlayerMovement Movement =>movement?movement:Core.GetCoreComponent<PlayerMovement>(ref movement);
         private PlayerMovement movement;
@@ -30,11 +32,12 @@ namespace FSM
 
         private void Start()
         {
-            Animator = GetComponent<Animator>();
+            Animator = GetComponentInChildren<Animator>();
             InputHandler = GetComponent<PlayerInputHandler>();
             NormalState=new PlayerNormalState(this,this,"s_Normal");
-            CrouchState = new PlayerCrouchState(this,this, "s_Crouch");
-            CombatState = new PlayerCombatState(this, NormalState,"s_Combat");
+            CrouchState = new PlayerCrouchState(this,NormalState,this, "Crouch");
+            NormalAttackState= new PlayerNormalAttackState(this,NormalState,this, "NormalAttack");
+            //CombatState = new PlayerCombatState(this, NormalState,"s_Combat");
             StateMachine =new StateMachine();
             StateMachine.Init(NormalState);
         }

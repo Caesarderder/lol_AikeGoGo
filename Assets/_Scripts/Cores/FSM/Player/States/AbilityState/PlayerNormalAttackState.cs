@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 namespace FSM
 {
-    public class PlayerCrouchState : ActionState
+    public class PlayerNormalAttackState : ActionState
     {
         private PlayerEntity player;
         private PlayerMovement movement;
@@ -16,14 +16,13 @@ namespace FSM
         private Collider collider;
         private string _animationName;
 
-        public PlayerCrouchState(Entity Entity, PlayerNormalState NormalState,PlayerEntity player, string anmationName):base(Entity,NormalState)
+        public PlayerNormalAttackState(Entity Entity, PlayerNormalState NormalState,PlayerEntity player, string anmationName):base(Entity,NormalState)
         {
             this.player = player;
             movement = player.Movement;
             inputHandler = player.InputHandler;
             data = player.Data;
             _animationName = anmationName;
-            collider= player.GetComponentInChildren<Collider>();
         }
 
         public override void Enter()
