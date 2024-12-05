@@ -13,7 +13,7 @@ namespace FSM
         public Core Core;
         public bool isDie;
 
-        protected void Awake()
+        protected virtual void Awake()
         {
 
             Core = GetComponentInChildren<Core>();

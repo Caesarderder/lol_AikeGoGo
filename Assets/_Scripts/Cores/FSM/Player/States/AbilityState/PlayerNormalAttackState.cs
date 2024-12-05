@@ -52,8 +52,8 @@ namespace FSM
 
         private void HorizontalMove()
         {
-            var move = inputHandler.MoveNormalized;
-            movement.SetTargetMoveSpeed(move * data.CrouchMoveSpeed);
+            //var move = inputHandler.MoveNormalized;
+            movement.SetTargetMoveSpeed(data.CrouchMoveSpeed);
             movement.HorizontalMove();
         }
 

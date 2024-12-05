@@ -21,7 +21,7 @@ public class PlayerPlanetMovement : PlanetMovementBase,IWorldObject
     void Start()
     {
         Init();
-        _camera = DataModule.Resolve<GamePlayDM>().GetWorld(WorldType).Camera;
+        //_camera = DataModule.Resolve<GamePlayDM>().GetWorld(WorldType).Camera;
     }
     protected override void CaculateFaceMoveSpeed()
     {

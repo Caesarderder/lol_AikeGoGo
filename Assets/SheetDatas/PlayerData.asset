@@ -13,7 +13,8 @@ MonoBehaviour:
   m_Name: PlayerData
   m_EditorClassIdentifier: 
   MaxHP: 100
-  MoveSpeed: 5
+  MaxMoveSpeed: 2
+  MinMoveSpeed: 1
   JumpSpeed: 5
   JumpCount: 1
   a: 5

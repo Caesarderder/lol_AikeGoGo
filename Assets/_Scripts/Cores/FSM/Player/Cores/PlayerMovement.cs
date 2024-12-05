@@ -10,7 +10,15 @@ namespace FSM
 
         private bool _inAir;
         private bool _jumpDown;
+        public bool UseGravity;
 
+        public float maxSpeed;
+        float maxGravitySpeed = 10f;
+        float GravityConst = 9.8f;
+
+        public float MoveSpeed=>_curMoveSpeed;
+
+        protected CharacterController _controller;
         protected Animator Animator;
         protected override void Awake()
         {
@@ -18,11 +26,13 @@ namespace FSM
             Animator=GetComponentInParent<Animator>();
             Player = GetComponentInParent<PlayerEntity>();
             inputHandler = GetComponentInParent<PlayerInputHandler>();
+            _controller = GetComponentInParent<CharacterController>();
             a = Player.Data.a;
+            maxSpeed=Player.Data.MaxMoveSpeed;
+            UseGravity = true;
         }
         private void Start()
         {
-            
             sense = Player.Sense;
         }
 
@@ -36,7 +46,7 @@ namespace FSM
             var lastMoveState = IsMoving;
             if (!CanMove)
                 return;
-            if (Mathf.Abs(CurMoveSpeed) > 0)
+            if (Mathf.Abs(_curMoveSpeed) > 0)
             {
                 IsMoving = true;
                 //Rb.linearVelocity = new Vector2(MoveSpeed.x, Rb.linearVelocity.y);
@@ -46,15 +56,30 @@ namespace FSM
 
                 IsMoving = false;
             }
-            Player.Animator.SetFloat("Speed", CurMoveSpeed);
+            var speed = new Vector3(_curMoveSpeed, _gravitySpeed, 0f);
         }
 
         public void Jump(float jumpSpeed)
         {
             Player.Animator.SetTrigger("JumpUp");
-
-            Rb.linearVelocity = new Vector3(Rb.linearVelocity.x, jumpSpeed,0f);
+            _gravitySpeed = jumpSpeed;
             _inAir = true;
+        }
+
+        protected void ApplyGravity()
+        {
+            if ( UseGravity)
+            {
+                if ( _gravitySpeed> -maxGravitySpeed )
+                {
+                    _gravitySpeed -= GravityConst * Time.deltaTime;
+                }
+                else
+                {
+                    _gravitySpeed = -maxGravitySpeed;
+                }
+                _controller.Move(new Vector3(0f,_gravitySpeed)* Time.deltaTime);
+            }
         }
         private void CheckAirState()
         {
@@ -63,7 +88,7 @@ namespace FSM
                 _inAir=true;
                 Player.Animator.SetTrigger("InAir");
             }
-            else if(_inAir&&sense.IsJumpDown&&Rb.linearVelocity.y<0f)
+            else if(_inAir&&sense.IsJumpDown&&_controller.velocity.y<0f)
             {
                 _inAir=false;
                 Player.Animator.SetTrigger("JumpDown");
@@ -79,35 +104,37 @@ namespace FSM
         public override void PhysicsUpdate()
         {
             base.PhysicsUpdate();
+            ApplyGravity();
             CheckAirState();
         }
 
+    
         public override void SetTargetMoveSpeed(float velocity)
         {
             base.SetTargetMoveSpeed(velocity);
             float speedOffset = 0.1f;
-            TargetMoveSpeed = velocity;
+            _targetMoveSpeed = velocity;
 
             // accelerate or decelerate to target speed
-            if ( CurMoveSpeed< TargetMoveSpeed - speedOffset
+            if ( _curMoveSpeed< _targetMoveSpeed - speedOffset
              )
         {
-                CurMoveSpeed = Mathf.Lerp(CurMoveSpeed, TargetMoveSpeed,
+                _curMoveSpeed = Mathf.Lerp(_curMoveSpeed, _targetMoveSpeed,
                 Time.deltaTime * a);
 
-            CurMoveSpeed = Mathf.Round(CurMoveSpeed * 1000f) / 1000f;
+            _curMoveSpeed = Mathf.Round(_curMoveSpeed * 1000f) / 1000f;
         }
-        else if(CurMoveSpeed > TargetMoveSpeed + speedOffset)
+        else if(_curMoveSpeed > _targetMoveSpeed + speedOffset)
         {
-            CurMoveSpeed = Mathf.Lerp(CurMoveSpeed, TargetMoveSpeed,
+            _curMoveSpeed = Mathf.Lerp(_curMoveSpeed, _targetMoveSpeed,
                 Time.deltaTime * a*4f);
 
             // round speed to 3 decimal places
-            CurMoveSpeed = Mathf.Round(CurMoveSpeed * 1000f) / 1000f;
+            _curMoveSpeed = Mathf.Round(_curMoveSpeed * 1000f) / 1000f;
         }
         else
         {
-            CurMoveSpeed = TargetMoveSpeed;
+            _curMoveSpeed = _targetMoveSpeed;
         }
 
 
@@ -133,7 +160,8 @@ namespace FSM
 
         public void SetHorizontalSpeedZero()
         {
-            Rb.linearVelocity=new Vector2(0f,Rb.linearVelocity.y);
+            _curMoveSpeed = 0f;
+            //Rb.linearVelocity=new Vector2(0f,Rb.linearVelocity.y);
         }
     }
 }

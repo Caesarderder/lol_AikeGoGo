@@ -4,7 +4,8 @@ using UnityEngine;
 public class PlayerDataSO: EntityDataSO
 {
     [Header("NormalState")]
-    public float MoveSpeed;
+    public float MaxMoveSpeed;
+    public float MinMoveSpeed;
     public float JumpSpeed;
     public int JumpCount=2;
     public float a = 1f;

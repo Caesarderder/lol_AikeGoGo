@@ -54,6 +54,7 @@ namespace FSM
         {
             base.PhysicsUpdate();
             HorizontalMove();
+            movement.HorizontalMove();
             Jump();
         }
    
@@ -63,18 +64,17 @@ namespace FSM
             var targetSpeed = 0f;
             if(move==1)
             {
-                targetSpeed = 1f;
+                targetSpeed = player.Data.MaxMoveSpeed;
             }
             else if(move==-1)
             {
-                targetSpeed = 0f;
+                targetSpeed = player.Data.MinMoveSpeed;
             }
             else
             {
-                targetSpeed = 0.5f;
+                targetSpeed = player.Data.MinMoveSpeed/2f+player.Data.MaxMoveSpeed/2f;
             }
             movement.SetTargetMoveSpeed(targetSpeed);
-            movement.HorizontalMove();
         }
 
         private bool Jump()

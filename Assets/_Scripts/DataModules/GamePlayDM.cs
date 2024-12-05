@@ -1,3 +1,4 @@
+using FSM;
 using UnityEngine;
 
 public class GamePlayDM : DataModule
@@ -149,13 +150,13 @@ public class GamePlayDM : DataModule
         return planet.transform;
     }
 
-    public void SetWorld(WorldAct planet)
+    public void SetPlayer(PlayerEntity planet)
     {
-        _intent.AddObject("World"+(int)planet.WorldType, planet);
+        _intent.AddObject("Player", planet);
     }
-    public WorldAct GetWorld(EWorldType type)
+    public PlayerEntity GetPlayer()
     {
-        return _intent.GetObject("World"+(int)type) as WorldAct;
+        return _intent.GetObject("Player") as PlayerEntity;
     }
     #endregion
 }

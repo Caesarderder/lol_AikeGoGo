@@ -30,6 +30,11 @@ namespace FSM
         [HideInInspector]
         public PlayerInputHandler InputHandler;
 
+        protected override void Awake()
+        {
+            base.Awake();
+            DataModule.Resolve<GamePlayDM>().SetPlayer(this);
+        }
         private void Start()
         {
             Animator = GetComponentInChildren<Animator>();

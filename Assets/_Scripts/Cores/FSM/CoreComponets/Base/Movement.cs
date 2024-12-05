@@ -5,16 +5,22 @@ namespace FSM
 {
     public class Movement:CoreComponent 
     {
-        protected Rigidbody Rb;
+        //protected  Rb;
        
 
         public Vector2 TargetPos;
 
-        public float TargetMoveSpeed;
-        public float CurMoveSpeed;
-        public float VerticalSpeed;
+        protected float _targetMoveSpeed;
+        protected float _curMoveSpeed;
+        protected float _gravitySpeed;
+
+        #region move logic
+        protected bool _isJump;
+        #endregion
+
         public float a;
         public bool CanMove;
+
 
         public bool IsMoving;
         public bool IsMovingToTargetPos;
@@ -25,7 +31,7 @@ namespace FSM
         protected override void Awake()
         {
             base.Awake();
-            Rb=GetComponentInParent<Rigidbody>();
+            //Rb=GetComponentInParent<Rigidbody>();
             _isFacingRight = 1;
         }
 
@@ -104,7 +110,7 @@ namespace FSM
         }
         public void JumpByForce(float force)
         {
-            Rb.AddForce(Vector2.up*force);
+            //Rb.AddForce(Vector2.up*force);
         }
     }
 }

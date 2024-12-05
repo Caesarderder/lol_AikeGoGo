@@ -17,7 +17,7 @@ public class Player : MonoBehaviour
         _movement=GetComponent<PlayerPlanetMovement>();
         _sense=GetComponentInChildren<InteractableSense>();
         _sense.Listener += OnInteractableTrigger;
-        _camera = DataModule.Resolve<GamePlayDM>().GetWorld(BelongWorld).Camera;
+        //_camera = DataModule.Resolve<GamePlayDM>().GetWorld(BelongWorld).Camera;
 
         EventAggregator.Subscribe<ChangeGameStateEvent>(OnGameStateChange);
     }

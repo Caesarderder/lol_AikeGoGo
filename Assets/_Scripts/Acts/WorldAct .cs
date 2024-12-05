@@ -24,7 +24,7 @@ public class WorldAct : ActBase
     {
         base.OnLoad();
         Debug.Log("setworld!");
-        DataModule.Resolve<GamePlayDM>().SetWorld(this);
+        //DataModule.Resolve<GamePlayDM>().SetWorld(this);
         _statusData=DataModule.Resolve<GameStatusDM>();
         MoveTo(_initPos);
         Debug.Log($"{ResManager.BigPlanet}_{_statusData.CurSelectedLevel}");
