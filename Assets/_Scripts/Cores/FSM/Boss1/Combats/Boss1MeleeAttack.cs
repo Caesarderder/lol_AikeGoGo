@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Boss1MeleeAttack:MonoBehaviour,ICombatStrategy 
 {
-    public Combat Combat { get; set; }
+    public Combat_old Combat { get; set; }
     public string CombatID { get=>typeof(Boss1MeleeAttack).ToString(); }
     public Action ChannelEndCombat { get; set; }
 
@@ -20,7 +20,7 @@ public class Boss1MeleeAttack:MonoBehaviour,ICombatStrategy
     public void StartCombat()
     {
         Init();
-        Combat=GetComponentInParent<Combat>();
+        Combat=GetComponentInParent<Combat_old>();
         _fireBall = Instantiate(_attackPrefab,transform).GetComponent<PlayerFireBall>();
         Charging();
         GetComponentInParent<Animator>().SetInteger("Judge1", 0);

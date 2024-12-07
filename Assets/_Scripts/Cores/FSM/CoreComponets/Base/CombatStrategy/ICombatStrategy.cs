@@ -3,7 +3,7 @@ using System;
 
 public interface ICombatStrategy
 {
-    public Combat Combat { get; set; }
+    public Combat_old Combat { get; set; }
     public string CombatID { get; }
     public Action ChannelEndCombat { get; set; }
 

@@ -26,13 +26,14 @@ namespace FSM
         {
             base.PhysicsUpdate();
         }
-        public void HealthChange(float value)
+        public virtual void HealthChange(float value)
         {
+            Debug.Log("ChangeHealth" + value);
             CurHP=Mathf.Clamp(CurHP+value, 0, MaxHP);
             ChannelHealthChange?.Invoke(value);
             if (CurHP <= 0)
             {
-                Entity.Die();
+                //Entity.Die();
                 ChannelDie?.Invoke();
             }
         }    

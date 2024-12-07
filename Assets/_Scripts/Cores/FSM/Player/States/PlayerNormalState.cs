@@ -8,7 +8,7 @@ namespace FSM
         private PlayerEntity player;
         private PlayerMovement movement;
         private PlayerSense sense;
-        private Combat combat;
+        private Combat_old combat;
         
         private PlayerInputHandler inputHandler;
         private PlayerDataSO data;
@@ -23,7 +23,6 @@ namespace FSM
             this.player = player;
             movement = player.Movement;
             sense = player.Sense;
-            combat = player.Combat;
             inputHandler = player.InputHandler;
             data= player.Data; 
             _animationName = anmationName;
@@ -62,19 +61,23 @@ namespace FSM
         {
             var move = inputHandler.MoveNormalized;
             var targetSpeed = 0f;
+            var targetSpeedOffset = 0f;
             if(move==1)
             {
                 targetSpeed = player.Data.MaxMoveSpeed;
+                targetSpeedOffset = player.Data.MaxMoveSpeedOffset;
             }
             else if(move==-1)
             {
                 targetSpeed = player.Data.MinMoveSpeed;
+                targetSpeedOffset = player.Data.MinMoveSpeedOffset;
             }
             else
             {
                 targetSpeed = player.Data.MinMoveSpeed/2f+player.Data.MaxMoveSpeed/2f;
             }
             movement.SetTargetMoveSpeed(targetSpeed);
+            movement.SetMoveSPeedOffset(targetSpeedOffset);
         }
 
         private bool Jump()

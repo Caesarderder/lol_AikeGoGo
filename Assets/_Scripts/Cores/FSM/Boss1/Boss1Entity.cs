@@ -17,8 +17,8 @@ namespace FSM
         public Movement Movement => movement ? movement : Core.GetCoreComponent<Movement>(ref movement);
         private Movement movement;
 
-        public Combat Combat => combat ? combat : Core.GetCoreComponent<Combat>(ref combat);
-        private Combat combat;
+        public Combat_old Combat => combat ? combat : Core.GetCoreComponent<Combat_old>(ref combat);
+        private Combat_old combat;
 
         public EnemySense Sense => sense ? sense : Core.GetCoreComponent<EnemySense>(ref sense);
         private EnemySense sense;

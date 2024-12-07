@@ -1,21 +1,40 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace FSM
 {
-    public class Combat:CoreComponent 
+    public class Combat : CoreComponent ,IAttackable
     {
         private Stats Stats;
-        [Header("¡ý¡ý¡ýCombat¡ý¡ý¡ý"),SerializeField]
-        private List<GameObject> combatPrefab;
-        public List<ICombatStrategy> CombatStrategies =new();
+        [SerializeField]
+        TriggerSense ts;
+        Action<IAttackable> onAttack;
+        public bool CanReceiveDamage;
 
         protected  void Start()
         {
-            Stats=core.GetCoreComponent<Stats>();
+            Stats = core.GetCoreComponent<Stats>();
+            ts.AddHandler(OnAttackCheck,IsAttackable);
+            CanReceiveDamage = true;
         }
-        public virtual void Init()
+
+        public void AddAttackHandler(Action<IAttackable> attack)
         {
+            onAttack += attack;
+        }
+        public void RemoveAttackHandler(Action<IAttackable> attack)
+        {
+            onAttack -= attack;
+        }
+
+        float _uid;
+        public void ReceiveDamage(float uid,float damage)
+        {
+            if ( Mathf.Approximately(_uid, uid) ||!CanReceiveDamage)
+                return;
+            _uid = uid;
+            Stats.HealthChange(-damage);
         }
 
         public override void LogicUpdate()
@@ -33,41 +52,27 @@ namespace FSM
             base.Awake();
         }
 
-        public ICombatStrategy GetCurCombatStrategy(string name)
+        bool IsAttackable(Collider collider)
         {
-            foreach (var prefab in combatPrefab)
-            {
-                if (prefab.GetComponent<ICombatStrategy>().CombatID == name)
-                {
-                    Instantiate(prefab, transform);
-                    break;
-                }
-            }
-            return null;
-        } 
-        public ICombatStrategy ActivateCombatStrategy(string name)
-        {
-            foreach (var prefab in combatPrefab)
-            {
-                print(prefab.GetComponent<ICombatStrategy>().CombatID);
-                if (prefab.GetComponent<ICombatStrategy>().CombatID==name)
-                {
-                    var go=Instantiate(prefab,transform);
-                    var combat=go.GetComponent<ICombatStrategy>();
-                    CombatStrategies.Add(combat);
-                    combat.Combat = this;
-                    return combat;
-                }
-            }
-            Debug.LogError("Can not Find Combat:" + name);
-            return null;
+            if ( collider.TryGetComponent<IAttackable>(out var attak) )
+                return true;
+            var attak2 = collider.GetComponentInParent<IAttackable>();
+            if ( attak2 != null )
+                return true;
+            return false;
         }
-        public void ReceiveDamage(float value)
-        {
-            print("Health:" + value);
 
-            Stats.HealthChange(value);
+        void OnAttackCheck(Collider collider,bool isEnter)
+        {
+            if(isEnter)
+            {
+                if ( collider.TryGetComponent<IAttackable>(out var attak) )
+                    onAttack?.Invoke(attak);
+                var attak2 = collider.GetComponentInParent<IAttackable>();
+                if ( attak2 != null )
+                    onAttack?.Invoke(attak2);
+            }
         }
-            
+
     }
 }

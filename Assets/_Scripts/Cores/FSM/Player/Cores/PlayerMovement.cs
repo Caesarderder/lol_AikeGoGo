@@ -1,3 +1,5 @@
+using DG.Tweening;
+using System.Security.AccessControl;
 using UnityEngine;
 namespace FSM
 {
@@ -7,18 +9,24 @@ namespace FSM
         private PlayerEntity Player;
         private PlayerInputHandler inputHandler;
         private PlayerSense sense;
+        [SerializeField]
+        Transform _failPos,_stopPos;
 
+
+        protected float _targetMoveSpeedOffset;
+        protected float _curMoveSpeedOffset;
         private bool _inAir;
         private bool _jumpDown;
         public bool UseGravity;
 
-        public float maxSpeed;
         float maxGravitySpeed = 10f;
         float GravityConst = 9.8f;
 
-        public float MoveSpeed=>_curMoveSpeed;
+        //Rigidbody rb;
+        public float MapMoveSpeed=>_curMoveSpeed;
+        float _speedOffset;
 
-        protected CharacterController _controller;
+        public CharacterController _controller;
         protected Animator Animator;
         protected override void Awake()
         {
@@ -27,8 +35,8 @@ namespace FSM
             Player = GetComponentInParent<PlayerEntity>();
             inputHandler = GetComponentInParent<PlayerInputHandler>();
             _controller = GetComponentInParent<CharacterController>();
+            //rb= GetComponentInParent<Rigidbody>();
             a = Player.Data.a;
-            maxSpeed=Player.Data.MaxMoveSpeed;
             UseGravity = true;
         }
         private void Start()
@@ -53,20 +61,13 @@ namespace FSM
             }
             else
             {
-
                 IsMoving = false;
             }
             var speed = new Vector3(_curMoveSpeed, _gravitySpeed, 0f);
         }
 
-        public void Jump(float jumpSpeed)
-        {
-            Player.Animator.SetTrigger("JumpUp");
-            _gravitySpeed = jumpSpeed;
-            _inAir = true;
-        }
 
-        protected void ApplyGravity()
+        protected void MotionTick()
         {
             if ( UseGravity)
             {
@@ -78,23 +79,59 @@ namespace FSM
                 {
                     _gravitySpeed = -maxGravitySpeed;
                 }
-                _controller.Move(new Vector3(0f,_gravitySpeed)* Time.deltaTime);
+                var speed = 0f;
+                if(_controller.transform.position.x<_stopPos.position.x)
+                    speed=_curMoveSpeedOffset;
+        
+                var move = _controller.Move(new Vector3(speed, _gravitySpeed) * Time.deltaTime);
+                if ( move != CollisionFlags.None )
+                {
+                    if(move==CollisionFlags.Below&&sense.IsGrounded)
+                        _gravitySpeed = 0f;
+                    _inAir = false;
+                }
+                else
+                {
+                    _inAir = true;
+                }
+                _controller.transform.position += Vector3.up * _gravitySpeed * Time.deltaTime;
+                if ( _controller.transform.position.x<_failPos.position.x)
+                    Debug.Log("ÓÎÏ·Ê§°Ü");
             }
+
+            Animator.SetFloat("Speed",_curMoveSpeed/6);
+        }
+
+        public void Jump(float jumpSpeed)
+        {
+            Player.Animator.SetTrigger("JumpUp");
+            _gravitySpeed = jumpSpeed;
+            //rb.AddForce(Vector3.up* Player.Data.JumpSpeed);
+            //_inAir = true;
         }
         private void CheckAirState()
         {
+            if(_inAir)
+            {
+                Player.Animator.SetTrigger("InAir");
+                Player.Animator.SetBool("Ground",false);
+            }
+            else
+            {
+                Player.Animator.ResetTrigger("InAir");
+                Player.Animator.SetBool("Ground",true);
+
+            }
             if(!_inAir&&!sense.IsGrounded)
             {
-                _inAir=true;
-                Player.Animator.SetTrigger("InAir");
+                //_inAir=true;
+                //Player.Animator.SetTrigger("InAir");
             }
             else if(_inAir&&sense.IsJumpDown&&_controller.velocity.y<0f)
             {
                 _inAir=false;
                 Player.Animator.SetTrigger("JumpDown");
             }
-            if(!_inAir)
-                Player.Animator.ResetTrigger("InAir");
             if(!sense.IsJumpDown)
             {
                 Player.Animator.ResetTrigger("JumpDown");
@@ -104,11 +141,38 @@ namespace FSM
         public override void PhysicsUpdate()
         {
             base.PhysicsUpdate();
-            ApplyGravity();
+            MotionTick();
             CheckAirState();
         }
 
-    
+        public void SetMoveSPeedOffset(float speed)
+        {
+            float speedOffset = 0.1f;
+            _targetMoveSpeedOffset = speed;
+
+            // accelerate or decelerate to target speed
+            if ( _curMoveSpeedOffset < _targetMoveSpeedOffset - speedOffset
+             )
+            {
+                _curMoveSpeedOffset = Mathf.Lerp(_curMoveSpeedOffset, _targetMoveSpeedOffset,
+                Time.deltaTime * a);
+
+                _curMoveSpeedOffset = Mathf.Round(_curMoveSpeedOffset * 1000f) / 1000f;
+            }
+            else if ( _curMoveSpeedOffset > _targetMoveSpeedOffset + speedOffset )
+            {
+                _curMoveSpeedOffset = Mathf.Lerp(_curMoveSpeedOffset, _targetMoveSpeedOffset,
+                    Time.deltaTime * a * 4f);
+
+                // round speed to 3 decimal places
+                _curMoveSpeedOffset = Mathf.Round(_curMoveSpeedOffset * 1000f) / 1000f;
+            }
+            else
+            {
+                _curMoveSpeedOffset = _targetMoveSpeedOffset;
+            }
+        }
+
         public override void SetTargetMoveSpeed(float velocity)
         {
             base.SetTargetMoveSpeed(velocity);

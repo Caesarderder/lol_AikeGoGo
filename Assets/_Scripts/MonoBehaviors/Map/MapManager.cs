@@ -32,7 +32,7 @@ public class MapManager : MonoBehaviour
 
     private void FixedUpdate()
     {
-        var moveSpeed=_player.Movement.MoveSpeed;
+        var moveSpeed=_player.Movement.MapMoveSpeed;
         foreach ( MapBlock block in blocks )
         {
             block.Tick(moveSpeed);

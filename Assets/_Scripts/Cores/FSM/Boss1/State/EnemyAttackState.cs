@@ -10,7 +10,7 @@ namespace FSM
         private string _animationName;
         private Boss1EntityData _data;
         private Boss1Entity boss;
-        private Combat combat;
+        private Combat_old combat;
         private Movement movement;
 
         private string combatName;

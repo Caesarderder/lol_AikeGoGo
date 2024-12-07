@@ -46,7 +46,7 @@ public class PlayerFireBall : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if(collision.TryGetComponent<Combat>(out var combat))
+        if(collision.TryGetComponent<Combat_old>(out var combat))
         {
             print("!!!!!!!");
             combat.ReceiveDamage(-Damage);

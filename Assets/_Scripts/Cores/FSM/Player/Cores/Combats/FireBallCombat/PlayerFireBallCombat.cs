@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class PlayerFireBallCombat:MonoBehaviour,ICombatStrategy 
 {
-    public Combat Combat { get; set; }
+    public Combat_old Combat { get; set; }
     public string CombatID { get=>typeof(PlayerFireBallCombat).ToString(); }
     public Action ChannelEndCombat { get; set; }
 

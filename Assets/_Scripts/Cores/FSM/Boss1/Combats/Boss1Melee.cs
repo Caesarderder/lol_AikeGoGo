@@ -7,10 +7,10 @@ public class Boss1Melee : MonoBehaviour
 {
     [SerializeField]
     private float _damage=10f;
-    private List<Combat> combats=new();
+    private List<Combat_old> combats=new();
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.TryGetComponent<Combat>(out var combat))
+        if (collision.TryGetComponent<Combat_old>(out var combat))
         {
             print("!!!!!!#!##@");
             if(!combats.Contains(combat))

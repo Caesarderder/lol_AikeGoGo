@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7785634658941114549}
-  m_Layer: 0
+  m_Layer: 14
   m_Name: ChildBlockPos
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -77,8 +77,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e6cdb404dbcf358468cce0ced561def0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  LastBlock: {fileID: 0}
-  NextBlock: {fileID: 0}
+  ParentBlock: {fileID: 0}
+  ChildBlock: {fileID: 0}
 --- !u!1 &7708146461203806856
 GameObject:
   m_ObjectHideFlags: 0

@@ -7,12 +7,15 @@ namespace FSM
     {
         private PlayerEntity player;
         private PlayerMovement movement;
+        private Combat combat;
 
         private PlayerInputHandler inputHandler;
         private PlayerDataSO data;
 
 
+
         //State
+        AttackUid attackUid = new();
         private Collider collider;
         private string _animationName;
 
@@ -20,6 +23,7 @@ namespace FSM
         {
             this.player = player;
             movement = player.Movement;
+            combat = player.Combat;
             inputHandler = player.InputHandler;
             data = player.Data;
             _animationName = anmationName;
@@ -29,10 +33,21 @@ namespace FSM
         {
             base.Enter();
             movement.CanMove = true;
+            attackUid.Reset();
             player.Animator.SetTrigger(_animationName);
-            Debug.Log("Enter");
+            combat.AddAttackHandler(ApplyAttack);
             HorizontalMove();
-            //collider.enabled = false;
+        }
+        public override void Exit()
+        {
+            base.Exit();
+            combat.RemoveAttackHandler(ApplyAttack);
+            Debug.Log("Exit");
+        }
+
+        void ApplyAttack(IAttackable attackable)
+        {
+            attackable.ReceiveDamage(attackUid.value,data.NormalAttackDamage);
         }
 
         public override void PhysicsUpdate()
@@ -43,28 +58,18 @@ namespace FSM
 
         private void CheckIfTransition()
         {
-            //if (inputHandler.Crouch == false||inputHandler.Jump)
-            //{
-            //    player.StateMachine.ChangeState(player.NormalState);
-            //}
+            if ( inputHandler.Crouch == false || inputHandler.Jump )
+            {
+                player.StateMachine.ChangeState(player.NormalState);
+            }
 
         }
-
         private void HorizontalMove()
         {
-            //var move = inputHandler.MoveNormalized;
-            movement.SetTargetMoveSpeed(data.CrouchMoveSpeed);
+            movement.SetTargetMoveSpeed(data.AttackMoveSpeed);
             movement.HorizontalMove();
         }
 
-        public override void Exit()
-        {
-            base.Exit();
-            Debug.Log("Exit");
-            //player.Animator.SetBool(_animationName,false);
-
-            //collider.enabled = true;
-        }
 
         public override void LogicUpdate()
         {
