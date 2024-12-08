@@ -12,7 +12,7 @@ public class TimeBackManager :IUpdate
     public Dictionary<int, float> GameRecordTimes=new();
 
 
-    float recordTimeStap=0.4f;
+    float recordTimeStap=0.1f;
     float backTimeStap=>recordTimeStap*2;
 
     bool _isTimeback;
@@ -56,12 +56,12 @@ public class TimeBackManager :IUpdate
                     }
                     _isTimeback = false;
                     GameTime = GameRecordTimes[_backTargetIndex];
-                    Debug.Log($"EndBack!{GameRecordIndex}");
+                    //Debug.Log($"EndBack!{GameRecordIndex}");
                 }
                 else
                 {
                     GameRecordIndex--;
-                    Debug.Log($"Back!{GameRecordIndex}");
+                    //Debug.Log($"Back!{GameRecordIndex}");
                 }
 
             }
@@ -77,7 +77,7 @@ public class TimeBackManager :IUpdate
             {
                 _deltaTime= recordTimeStap;
                 Record();
-                    Debug.Log($"RecordBack!{GameRecordIndex}");
+                    //Debug.Log($"RecordBack!{GameRecordIndex}");
             }
 
         }

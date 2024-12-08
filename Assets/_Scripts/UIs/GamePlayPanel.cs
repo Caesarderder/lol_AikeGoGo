@@ -14,6 +14,8 @@ public class GamePlayPanel : ViewBase
 {
     [SerializeField]
     Image img_health;
+    [SerializeField]
+    TMP_Text txt_drug;
 
 
     #region Unity
@@ -21,15 +23,22 @@ public class GamePlayPanel : ViewBase
     private void OnEnable()
     {
         EventAggregator.Subscribe<SPlayerChangeHealth>(OnHealthChange);
+        EventAggregator.Subscribe<SOnDrugScoreChange>(OnDrugChange);
     }
     private void OnDisable()
     {
         
         EventAggregator.Unsubscribe<SPlayerChangeHealth>(OnHealthChange);
+        EventAggregator.Unsubscribe<SOnDrugScoreChange>(OnDrugChange);
     }
     void OnHealthChange(SPlayerChangeHealth evt)
     {
         img_health.fillAmount=evt.cur/evt.max;
+
+    }
+    void OnDrugChange(SOnDrugScoreChange evt)
+    {
+        txt_drug.text="score:"+evt.value;
 
     }
     private void Start()

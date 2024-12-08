@@ -1,5 +1,11 @@
 using FSM;
 using UnityEngine;
+using static UnityEngine.Rendering.VolumeComponent;
+
+public struct SOnDrugScoreChange
+{
+    public int value;
+}
 
 public class GamePlayDM : DataModule
 {
@@ -13,6 +19,27 @@ public class GamePlayDM : DataModule
     public TimeBackManager TimeBackManager;
 
     #endregion
+    #region 对局分数
+
+    public void SetDrugScore(int value)
+    {
+        if(_intent.TryGetValue("Drug",out int value1))
+        {
+            value += _intent.GetInt("Drug");
+        }
+        else
+        {
+            value = 1;
+        }
+        _intent.AddInt("Drug", value);
+        EventAggregator.Publish(new SOnDrugScoreChange()
+        {
+            value = value,
+        });
+    }
+
+
+    #endregion
 
     #region TimeBack
     #endregion
@@ -23,6 +50,7 @@ public class GamePlayDM : DataModule
     {
         base.OnCreate();
         _intent = Intent.Get();
+        _intent.AddInt("Drug",0);
         EventAggregator.Subscribe<SActLoadEvent>(OnEnterGame);
         EventAggregator.Subscribe<SActUnloadedEvent>(OnExitGame);
     }

@@ -41,6 +41,9 @@ public class MapBlock : MonoBehaviour,ITimeBackable
     private void Awake()
     {
         childPos=transform.GetChild(0);
+    }
+    private void Start()
+    {
         _timeManager=DataModule.Resolve<GamePlayDM>().TimeBackManager;
         _timeManager.Register(this);
     }
