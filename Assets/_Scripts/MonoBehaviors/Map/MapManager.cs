@@ -23,7 +23,7 @@ public class MapManager : MonoBehaviour,ITimeBackable
     public void TimeStateRecord(int index)
     {
     }
-    public void TimeBackStart() { 
+    public void TimeBackStart(int index) { 
         _isBack = true;
 
     }
@@ -31,7 +31,7 @@ public class MapManager : MonoBehaviour,ITimeBackable
     {
 
     }
-    public void TimeBackEnd()
+    public void TimeBackEnd(int index)
     {
         _isBack = false;
     }

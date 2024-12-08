@@ -23,15 +23,18 @@ public class MapBlock : MonoBehaviour,ITimeBackable
         else
             _timeRecords.Add(index, transform.position);
     }
-    public void TimeBackStart() { 
+    public void TimeBackStart(int index) { 
         _isBack = true;
     }
     public void TimeBackTick(int index)
     {
         if(_timeRecords.ContainsKey(index))
+        {
             transform.position = _timeRecords[index];
+            _timeRecords.Remove(index);
+        }
     }
-    public void TimeBackEnd()
+    public void TimeBackEnd(int index)
     {
         _isBack = false;
     }
@@ -46,6 +49,10 @@ public class MapBlock : MonoBehaviour,ITimeBackable
     {
         _timeManager=DataModule.Resolve<GamePlayDM>().TimeBackManager;
         _timeManager.Register(this);
+    }
+    private void OnDestroy()
+    {
+        _timeManager.UnRegister(this);
     }
 
     public void Spawn(MapBlock lastBlock)
@@ -75,6 +82,7 @@ public class MapBlock : MonoBehaviour,ITimeBackable
         if(!_isBack)
         {
             var pos = transform.position;
+            //transform.position = pos + new Vector3(-speed * Time.unscaledDeltaTime, pos.y, pos.z);
             transform.position = pos + new Vector3(-speed * Time.deltaTime, pos.y, pos.z);
         }
     }

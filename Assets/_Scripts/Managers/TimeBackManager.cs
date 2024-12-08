@@ -14,6 +14,7 @@ public class TimeBackManager :IUpdate
 
     float recordTimeStap=0.1f;
     float backTimeStap=>recordTimeStap*2;
+    public int BackIndex =>(int)(2f/ recordTimeStap );
 
     bool _isTimeback;
     int _backCurIndex;
@@ -52,7 +53,7 @@ public class TimeBackManager :IUpdate
                 {
                     foreach ( var t in backables )
                     {
-                        t?.TimeBackEnd();
+                        t?.TimeBackEnd(GameRecordIndex);
                     }
                     _isTimeback = false;
                     GameTime = GameRecordTimes[_backTargetIndex];
@@ -108,7 +109,7 @@ public class TimeBackManager :IUpdate
             _backCurIndex = 0;
         foreach ( var t in backables )
         {
-            t?.TimeBackStart();
+            t?.TimeBackStart(GameRecordIndex);
         }
         }
     }
@@ -118,8 +119,8 @@ public class TimeBackManager :IUpdate
 
 public interface ITimeBackable
 {
-    public void TimeBackStart();
+    public void TimeBackStart(int index);
     public void TimeStateRecord(int index);
     public void TimeBackTick(int index);
-    public void TimeBackEnd();
+    public void TimeBackEnd(int index);
 }

@@ -66,13 +66,21 @@ namespace FSM
             var speed = new Vector3(_curMoveSpeed, _gravitySpeed, 0f);
         }
 
+        bool _canMove=true;
+        public void MoveToTarget(Vector3 pos)
+        {
+            _controller.transform.position=pos;
+            _canMove=false;
+        }
+
 
         protected void MotionTick()
         {
-            if ( UseGravity)
+            if ( UseGravity&&_canMove)
             {
                 if ( _gravitySpeed> -maxGravitySpeed )
                 {
+                    //_gravitySpeed -= GravityConst * Time.unscaledDeltaTime;
                     _gravitySpeed -= GravityConst * Time.deltaTime;
                 }
                 else
@@ -83,7 +91,7 @@ namespace FSM
                 if(_controller.transform.position.x<_stopPos.position.x)
                     speed=_curMoveSpeedOffset;
         
-                var move = _controller.Move(new Vector3(speed, _gravitySpeed) * Time.deltaTime);
+                var move = _controller.Move(new Vector3(speed, _gravitySpeed) * Time.deltaTime );
                 if ( move != CollisionFlags.None )
                 {
                     if(move==CollisionFlags.Below&&sense.IsGrounded)
@@ -95,9 +103,10 @@ namespace FSM
                     _inAir = true;
                 }
                 _controller.transform.position += Vector3.up * _gravitySpeed * Time.deltaTime;
-                if ( _controller.transform.position.x<_failPos.position.x)
-                    Debug.Log("ÓÎÏ·Ê§°Ü");
+                if ( _controller.transform.position.x < _failPos.position.x ) ;
+                    //Debug.Log("ÓÎÏ·Ê§°Ü");
             }
+            _canMove = true;
 
             Animator.SetFloat("Speed",_curMoveSpeed/6);
         }

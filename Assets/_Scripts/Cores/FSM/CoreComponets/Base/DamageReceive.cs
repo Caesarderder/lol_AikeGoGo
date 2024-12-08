@@ -8,12 +8,32 @@ namespace FSM
     {
         private Stats Stats;
         public bool CanReceiveDamage;
+        public bool isPlayerAttackable = true;
+
+        InstanceAttackTarget attackTarget;
 
         protected  void Start()
         {
             Stats = core.GetCoreComponent<Stats>();
             CanReceiveDamage = true;
         }
+
+        #region InstanceAttack
+        private void OnEnable()
+        {
+            if(isPlayerAttackable)
+            {
+                attackTarget = new InstanceAttackTarget();
+                attackTarget.Init(this,transform);
+            }
+            attackTarget.OnEnable();
+        }
+        private void OnDisable()
+        {
+            attackTarget.OnDisable();
+            attackTarget.OnEndInstanceAttack(new SEndInstanceAttack());
+        }
+        #endregion
 
         float _uid;
         public void ReceiveDamage(float uid,float damage)

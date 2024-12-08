@@ -15,9 +15,11 @@ MonoBehaviour:
   MaxHP: 100
   MaxMoveSpeed: 6
   MinMoveSpeed: 4
-  MaxMoveSpeedOffset: 0.6
-  MinMoveSpeedOffset: -1
+  MaxMoveSpeedOffset: 1
+  MinMoveSpeedOffset: -2
   JumpSpeed: 4.5
   JumpCount: 1
   a: 5
   CrouchMoveSpeed: 5
+  AttackMoveSpeed: 5
+  NormalAttackDamage: 5

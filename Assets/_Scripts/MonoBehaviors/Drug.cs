@@ -3,8 +3,11 @@ using UnityEngine;
 
 public class Drug : MonoBehaviour,IAttackable,ITimeBackable
 {
+    InstanceAttackTarget target;
     private void Awake()
     {
+        target = new InstanceAttackTarget();
+        target.Init(this, transform);
         _isAlive=true;
         _lastState=true;
     }
@@ -12,6 +15,14 @@ public class Drug : MonoBehaviour,IAttackable,ITimeBackable
     {
         _timeManager=DataModule.Resolve<GamePlayDM>().TimeBackManager;
         _timeManager.Register(this);
+    }
+    private void OnEnable()
+    {
+        target.OnEnable();
+    }
+    private void OnDisable()
+    {
+        target.OnDisable();
     }
     public void ReceiveDamage(float id ,float damage)
     {
@@ -43,7 +54,7 @@ public class Drug : MonoBehaviour,IAttackable,ITimeBackable
     public void TimeStateRecord(int index)
     {
     }
-    public void TimeBackStart() { 
+    public void TimeBackStart(int index) { 
         _isBack = true;
     }
     public void TimeBackTick(int index)
@@ -54,7 +65,7 @@ public class Drug : MonoBehaviour,IAttackable,ITimeBackable
             _timeRecords.Remove(index);
         }
     }
-    public void TimeBackEnd()
+    public void TimeBackEnd(int index)
     {
         _isBack = false;
     }
