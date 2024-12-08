@@ -3,8 +3,7 @@ using UnityEngine;
 
 public interface IUpdate
 {
-	void Register(MonoBehaviour mono);
-	void Update();
+	void Tick();
 }
 
 public interface IFixedUpdate

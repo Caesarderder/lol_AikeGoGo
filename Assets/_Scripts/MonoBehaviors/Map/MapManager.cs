@@ -5,7 +5,7 @@ using UniRx.Triggers;
 using UnityEngine;
 using UnityEngine.PlayerLoop;
 
-public class MapManager : MonoBehaviour
+public class MapManager : MonoBehaviour,ITimeBackable
 {
     PlayerEntity _player;
     private List<MapBlock> blocks = new List<MapBlock>(5);
@@ -14,10 +14,36 @@ public class MapManager : MonoBehaviour
     Transform startPos;
     Transform spwanPos;
     Transform destoryPos;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+
+    #region TimeBack
+    bool _isBack;
+    float _recordTimer;
+    TimeBackManager _timeManager;
+
+    public void TimeStateRecord(int index)
+    {
+    }
+    public void TimeBackStart() { 
+        _isBack = true;
+
+    }
+    public void TimeBackTick(int time)
+    {
+
+    }
+    public void TimeBackEnd()
+    {
+        _isBack = false;
+    }
+
+    #endregion
+
     void Start()
     {
         _player = DataModule.Resolve<GamePlayDM>().GetPlayer();
+        _timeManager= DataModule.Resolve<GamePlayDM>().TimeBackManager;
+        _timeManager.Register(this);
+
         startPos=transform.GetChild(0);
         spwanPos=transform.GetChild(1);
         destoryPos=transform.GetChild(2);
@@ -30,14 +56,6 @@ public class MapManager : MonoBehaviour
         Init();
     }
 
-    private void FixedUpdate()
-    {
-        var moveSpeed=_player.Movement.MapMoveSpeed;
-        foreach ( MapBlock block in blocks )
-        {
-            block.Tick(moveSpeed);
-        }
-    }
     void Init()
     {
         //生成4个随机的MapBlock
@@ -60,14 +78,24 @@ public class MapManager : MonoBehaviour
     void MapTick()
     {
 
-        if ( blocks[0].CurPos < destoryPos.position.x )
+        if(!_isBack)
         {
-            blocks[0].SelfDestory();
-            blocks.RemoveAt(0);
-        }
-        if ( blocks[blocks.Count-1].ChildPos< spwanPos.position.x )
-        {
-            SpwanBlock();
+
+            if ( blocks[0].CurPos < destoryPos.position.x )
+            {
+                blocks[0].SelfDestory();
+                blocks.RemoveAt(0);
+            }
+            if ( blocks[blocks.Count - 1].ChildPos < spwanPos.position.x )
+            {
+                SpwanBlock();
+            }
+
+            var moveSpeed = _player.Movement.MapMoveSpeed;
+            foreach ( MapBlock block in blocks )
+            {
+                block.Tick(moveSpeed);
+            }
         }
     }
 

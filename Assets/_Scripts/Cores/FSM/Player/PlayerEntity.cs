@@ -33,7 +33,10 @@ namespace FSM
         protected override void Awake()
         {
             base.Awake();
-            DataModule.Resolve<GamePlayDM>().SetPlayer(this);
+            var dm=DataModule.Resolve<GamePlayDM>();
+            dm.SetPlayer(this);
+            dm.TimeBackManager = new TimeBackManager();
+            ResManager.MonoManager.Register(dm.TimeBackManager);
         }
         private void Start()
         {
@@ -61,6 +64,12 @@ namespace FSM
         protected override void Update()
         {
             base.Update();
+            if(!isDie&&InputHandler.Spell1)
+            {
+                InputHandler.Spell1 = false;
+                DataModule.Resolve<GamePlayDM>().TimeBackManager.DoTimeBack(1);
+            }
+
         }
         protected override void OnAnimationFishedTrigger()
         {

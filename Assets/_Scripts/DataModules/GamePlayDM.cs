@@ -9,7 +9,12 @@ public class GamePlayDM : DataModule
     //关卡状态
     private Intent _intent;
 
+    //时间倒流
+    public TimeBackManager TimeBackManager;
 
+    #endregion
+
+    #region TimeBack
     #endregion
 
 
