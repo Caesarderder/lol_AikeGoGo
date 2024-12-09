@@ -10,6 +10,7 @@ namespace FSM
         private PlayerMovement movement;
         private Combat combat;
         private PlayerSense sense;
+        private PlayerStats Stats;
 
         private PlayerInputHandler inputHandler;
         private PlayerDataSO data;
@@ -20,6 +21,7 @@ namespace FSM
         AttackUid attackUid ;
         private string _animationName;
         private int _jumpCount;
+        float spCost;
         public SInstanceAttackTarget attack;
 
         public PlayerInstanceAttakState(Entity Entity, PlayerNormalState NormalState,PlayerEntity player, string anmationName):base(Entity,NormalState)
@@ -27,12 +29,14 @@ namespace FSM
             this.player = player;
             movement = player.Movement;
             combat = player.Combat;
-            sense=player.Sense;
+            Stats = player.Stats;
+            sense = player.Sense;
             inputHandler = player.InputHandler;
             data = player.Data;
             _animationName = anmationName;
             _jumpCount = data.JumpCount;
-            attackUid = new(); 
+            attackUid = new();
+            spCost = data.InstaceAttackSpCost;
         }
 
         public override void Enter()
@@ -43,6 +47,8 @@ namespace FSM
             attack.Attackable.ReceiveDamage(attackUid.value,data.NormalAttackDamage);
             movement.MoveToTarget(new Vector3(attack.pos.x,attack.pos.y,player.transform.position.z));
             player.Animator.SetTrigger("InstanceAttack");
+            Stats.SpChange(-spCost);
+
         }
         public override void Exit()
         {

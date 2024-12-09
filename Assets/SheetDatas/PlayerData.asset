@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3936a18197f10914595219efb703df57, type: 3}
   m_Name: PlayerData
   m_EditorClassIdentifier: 
-  MaxHP: 100
+  MaxHP: 3
   MaxMoveSpeed: 6
   MinMoveSpeed: 4
   MaxMoveSpeedOffset: 1
@@ -20,6 +20,6 @@ MonoBehaviour:
   JumpSpeed: 4.5
   JumpCount: 1
   a: 5
-  CrouchMoveSpeed: 5
+  CrouchMoveSpeed: 6
   AttackMoveSpeed: 5
   NormalAttackDamage: 5

@@ -1,13 +1,14 @@
+using FSM;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Drug : MonoBehaviour,IAttackable,ITimeBackable
+public class Drug : MonoBehaviour,ITimeBackable
 {
-    InstanceAttackTarget target;
+    //InstanceAttackTarget target;
     private void Awake()
     {
-        target = new InstanceAttackTarget();
-        target.Init(this, transform);
+        //target = new InstanceAttackTarget();
+        //target.Init(this, transform);
         _isAlive=true;
         _lastState=true;
     }
@@ -16,26 +17,32 @@ public class Drug : MonoBehaviour,IAttackable,ITimeBackable
         _timeManager=DataModule.Resolve<GamePlayDM>().TimeBackManager;
         _timeManager.Register(this);
     }
+    private void OnTriggerEnter(Collider other)
+    {
+        var player=other.GetComponentInParent<PlayerEntity>();
+        if(player!=null)
+        {
+
+            SetState(false);
+            _timeManager.Record();
+
+            var index = _timeManager.GameRecordIndex;
+            if ( _timeRecords.ContainsKey(index) )
+                _timeRecords[index] = true;
+            else
+                _timeRecords.Add(index, true);
+            _lastState = _isAlive;
+        }
+    }
     private void OnEnable()
     {
-        target.OnEnable();
+        //target.OnEnable();
     }
     private void OnDisable()
     {
-        target.OnDisable();
+        //target.OnDisable();
     }
-    public void ReceiveDamage(float id ,float damage)
-    {
-        SetState(false);
-        _timeManager.Record();
 
-        var index = _timeManager.GameRecordIndex;
-        if(_timeRecords.ContainsKey(index))
-            _timeRecords[index]= true;
-        else
-            _timeRecords.Add(index, true);
-        _lastState=_isAlive;
-    }    
     void SetState(bool isActive)
     {
         _lastState = _isAlive;

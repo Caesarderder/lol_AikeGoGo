@@ -39,7 +39,7 @@ namespace FSM
             Core.PhysicsUpdate();
             StateMachine.CurrentState.PhysicsUpdate();
         }
-        protected virtual void OnAnimationFishedTrigger()
+        protected virtual void OnAnimationFishedTrigger(int i=0)
         {
 
         }

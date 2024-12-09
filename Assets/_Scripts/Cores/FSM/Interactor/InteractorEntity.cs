@@ -9,6 +9,16 @@ public struct SEntityState
     public float AcPlayTime;
     public bool IsDie;
 }
+public struct SInteractorState  
+{ 
+    public Vector3 Pos;
+    public int AcNameHash;
+    public float AcPlayTime;
+    public bool IsDie;
+
+    public int Sp;
+}
+
 
 namespace FSM
 {
@@ -31,6 +41,8 @@ namespace FSM
 
         [SerializeField]
         AnimationTrigger trigger;
+
+        public int SP=2;
 
         private void Start()
         {
@@ -57,14 +69,15 @@ namespace FSM
 
         bool _isBack;
         TimeBackManager _timeManager;
-        Dictionary<int, SEntityState> _timeRecords = new(100);
+        Dictionary<int, SInteractorState> _timeRecords = new(100);
 
         public void TimeStateRecord(int index)
         {
             var curAcInfo=Animator.GetCurrentAnimatorStateInfo(0);
             if ( _timeRecords.ContainsKey(index) )
-                _timeRecords[index] = new SEntityState()
+                _timeRecords[index] = new SInteractorState()
                 { 
+                    Sp=SP,
                     Pos=transform.position,
                     AcNameHash=curAcInfo.shortNameHash,
                     AcPlayTime=curAcInfo.normalizedTime,
@@ -72,8 +85,9 @@ namespace FSM
                 };
 
             else
-                _timeRecords[index] = new SEntityState()
+                _timeRecords[index] = new SInteractorState()
                 { 
+                    Sp=SP,
                     Pos=transform.position,
                     AcNameHash=curAcInfo.shortNameHash,
                     AcPlayTime=curAcInfo.normalizedTime,
@@ -92,6 +106,7 @@ namespace FSM
             {
                 var info = _timeRecords[index];
                 transform.position = info.Pos;
+                SP = info.Sp;
                 //Animator.Play(info.AcNameHash);
                 Animator.Play(info.AcNameHash,0,info.AcPlayTime);
                 isDie= info.IsDie;
@@ -142,10 +157,10 @@ namespace FSM
             base.Update();
             
         }
-        protected override void OnAnimationFishedTrigger()
+        protected override void OnAnimationFishedTrigger(int i=0)
         {
             if(!isDie&&!_isBack)
-            StateMachine.CurrentState.AnimationFinishedTrigger();
+            StateMachine.CurrentState.AnimationFinishedTrigger(i);
         }
     }
 

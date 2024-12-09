@@ -12,6 +12,7 @@ namespace FSM
         [SerializeField]
         Transform _failPos,_stopPos;
 
+        public float VelocityAddation;
 
         protected float _targetMoveSpeedOffset;
         protected float _curMoveSpeedOffset;
@@ -186,7 +187,7 @@ namespace FSM
         {
             base.SetTargetMoveSpeed(velocity);
             float speedOffset = 0.1f;
-            _targetMoveSpeed = velocity;
+            _targetMoveSpeed = velocity+VelocityAddation;
 
             // accelerate or decelerate to target speed
             if ( _curMoveSpeed< _targetMoveSpeed - speedOffset

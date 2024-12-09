@@ -14,6 +14,8 @@ namespace FSM
         public float damage=10f;
         public float bulletVelocity=10f;
         public GameObject go_bullet;
+        [SerializeField]
+        Transform firPos;
 
         private void Start()
         {
@@ -21,7 +23,7 @@ namespace FSM
         }
         public override bool CheckIfDoAction()
         {
-            return player.position.x > checkPos.position.x;
+            return player.position.x > checkPos.position.x&&base.CheckIfDoAction();
         }
 
 
@@ -31,10 +33,16 @@ namespace FSM
             entity.Animator.SetTrigger(animationName);
             
         }
+        public override void OnAction(int index)
+        {
+            base.OnAction(index);
+            EndAction();
+            
+        }
         public override void EndAction()
         {
             base.EndAction();
-            var bullet= Instantiate(go_bullet, transform.position, Quaternion.FromToRotation(-transform.forward,transform.forward)).GetComponent <Bullet>();
+            var bullet= Instantiate(go_bullet, firPos.position, Quaternion.FromToRotation(-transform.forward,transform.forward)).GetComponent <Bullet>();
             bullet.Fire(transform.right, damage, bulletVelocity);
         }
 

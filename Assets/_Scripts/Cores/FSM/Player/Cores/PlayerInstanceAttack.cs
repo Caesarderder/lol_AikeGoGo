@@ -7,6 +7,7 @@ namespace FSM
     {
         //FSM
         private PlayerEntity Player;
+        private PlayerStats Stats;
         private PlayerInputHandler inputHandler;
         PlayerMovement movement;
         bool _isAttack;
@@ -15,6 +16,7 @@ namespace FSM
         {
             base.Awake();
             Player=GetComponentInParent<PlayerEntity>();
+            Stats = Player.Stats;
             inputHandler=GetComponentInParent<PlayerInputHandler>();
         }
         private void Start()
@@ -54,7 +56,7 @@ namespace FSM
                 {
                     Exit();
                 }
-                else
+                else if(Stats.CheckIfCanSpell(Player.Data.InstaceAttackSpCost))
                     Enter();
                 inputHandler.Spell2 = false;
             }

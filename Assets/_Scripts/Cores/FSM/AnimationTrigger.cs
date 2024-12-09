@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class AnimationTrigger: MonoBehaviour
 {
-    public Action action;
-    public void OnAnimationTrigger()
+    public Action<int> action;
+    public void OnAnimationTrigger(int i)
     {
-        action?.Invoke();
+        action?.Invoke(i);
     }
 }

@@ -60,9 +60,9 @@ namespace FSM
             base.Update();
             
         }
-        protected override void OnAnimationFishedTrigger()
+        protected override void OnAnimationFishedTrigger(int i = 0)
         {
-            StateMachine.CurrentState.AnimationFinishedTrigger();
+            StateMachine.CurrentState.AnimationFinishedTrigger(i);
         }
          }
 

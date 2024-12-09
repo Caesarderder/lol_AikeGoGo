@@ -3,6 +3,10 @@ using UnityEngine;
 [CreateAssetMenu(menuName ="Data/Player/PlayerEntityData")]
 public class PlayerDataSO: EntityDataSO
 {
+    public float MaxSp=100f;
+    public float SpRecoverSPeed=5f;
+    public float InstaceAttackSpCost = 30f;
+    public float TimeBackSpCost = 20f;
     [Header("NormalState")]
     public float MaxMoveSpeed;
     public float MinMoveSpeed;

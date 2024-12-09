@@ -99,7 +99,7 @@ namespace FSM
 
         }
 
-        public override void AnimationFinishedTrigger()
+        public override void AnimationFinishedTrigger(int i = 0)
         {
             base.AnimationFinishedTrigger();
             if(combatName==typeof(Boss1MeleeAttack).ToString())

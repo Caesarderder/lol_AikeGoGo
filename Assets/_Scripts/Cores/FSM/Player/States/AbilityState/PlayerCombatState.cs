@@ -44,7 +44,7 @@ namespace FSM
         {
 
         }
-        public override void AnimationFinishedTrigger()
+        public override void AnimationFinishedTrigger(int i = 0)
         {
 
         }

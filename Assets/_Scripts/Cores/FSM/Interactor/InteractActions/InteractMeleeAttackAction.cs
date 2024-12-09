@@ -25,13 +25,14 @@ namespace FSM
         public float damage=10f;
         AttackUid _attackUid=new();
 
-        private void Start()
+        protected virtual void Start()
         {
             player=DataModule.Resolve<GamePlayDM>().GetPlayer().transform;
+            checkPos.position += Vector3.right * UnityEngine.Random.Range(-0.5f, 0.5f);
         }
         public override bool CheckIfDoAction()
         {
-            return player.position.x > checkPos.position.x;
+            return player.position.x > checkPos.position.x&&base.CheckIfDoAction();
         }
 
         public override void DoAction()
@@ -40,7 +41,14 @@ namespace FSM
             sense.AddHandler(OnTrigger, PlayerCheck);
             entity.Animator.SetTrigger(animationName);
             _attackUid.Reset();
-            
+        }
+
+
+         public override void OnAction(int index)
+        {
+            base.OnAction(index);
+            EndAction();
+
         }
         public override void EndAction()
         {

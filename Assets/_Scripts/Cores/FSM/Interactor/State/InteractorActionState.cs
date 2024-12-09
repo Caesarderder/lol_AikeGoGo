@@ -36,7 +36,6 @@ namespace FSM
         public override void Exit()
         {
             base.Exit();
-            Action.EndAction();
 
         }
 
@@ -51,9 +50,10 @@ namespace FSM
 
         }
 
-        public override void AnimationFinishedTrigger()
+        public override void AnimationFinishedTrigger(int i = 0)
         {
             base.AnimationFinishedTrigger();
+            Action.OnAction(i);
         }
     }
 }

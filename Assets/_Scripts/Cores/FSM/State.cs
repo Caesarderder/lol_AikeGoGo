@@ -31,7 +31,7 @@ namespace FSM
         {
 
         }
-        public virtual void AnimationFinishedTrigger()
+        public virtual void AnimationFinishedTrigger(int i=0)
         {
 
         }

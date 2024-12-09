@@ -28,6 +28,8 @@ namespace FSM
         private PlayerMovement movement;
         public PlayerSense Sense=> sense? sense: Core.GetCoreComponent<PlayerSense>(ref sense);
         private PlayerSense sense;
+        public PlayerStats Stats => stats ? stats : Core.GetCoreComponent<PlayerStats>(ref stats);
+        private PlayerStats stats;
         
         public Combat Combat=> combat? combat : Core.GetCoreComponent<Combat>(ref combat);
         private Combat combat;
@@ -142,10 +144,10 @@ namespace FSM
         {
             if(!_isBack)
             {
-
                 base.Update();
-                if ( !isDie && InputHandler.Spell1&&!PlayerTimeFrozen.IsFrozen)
+                if ( !isDie && InputHandler.Spell1&&!PlayerTimeFrozen.IsFrozen&&Stats.CheckIfCanSpell(Data.TimeBackSpCost))
                 {
+                    Stats.SpChange(-Data.TimeBackSpCost);
                     InputHandler.Spell1 = false;
                     DataModule.Resolve<GamePlayDM>().TimeBackManager.DoTimeBack(GetBackIndex());
                 }
@@ -181,9 +183,9 @@ namespace FSM
             return curIndex<1?1:curIndex;
 
         }
-        protected override void OnAnimationFishedTrigger()
+        protected override void OnAnimationFishedTrigger(int i=0)
         {
-            StateMachine.CurrentState.AnimationFinishedTrigger();
+            StateMachine.CurrentState.AnimationFinishedTrigger(i);
         }
 
         public void InstanceAttack(SInstanceAttackTarget evt)
@@ -192,6 +194,23 @@ namespace FSM
             StateMachine.ChangeState(InstanceAttackState);
 
 
+        }
+        public void AddBuff(EBuffType type,float value)
+         {
+            switch ( type )
+            {
+                case EBuffType.Hp:
+                    Stats.HealthChange(value);
+                    break;
+                case EBuffType.Sp:
+                    Stats.SpChange(value);
+                    break;
+                case EBuffType.MoveSpeed:
+                    Movement.VelocityAddation += value;
+                    break;
+                default:
+                    break;
+            }
         }
     }
 
