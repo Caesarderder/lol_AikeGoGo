@@ -12,7 +12,7 @@ public class TimeBackManager :IUpdate
     public Dictionary<int, float> GameRecordTimes=new();
 
 
-    float recordTimeStap=0.1f;
+    float recordTimeStap=0.05f;
     float backTimeStap=>recordTimeStap*2;
     public int BackIndex =>(int)(2f/ recordTimeStap );
 
@@ -51,6 +51,7 @@ public class TimeBackManager :IUpdate
                 }
                 if( GameRecordIndex == _backTargetIndex)
                 {
+                    Time.timeScale = 1f;
                     foreach ( var t in backables )
                     {
                         t?.TimeBackEnd(GameRecordIndex);
@@ -87,6 +88,8 @@ public class TimeBackManager :IUpdate
 
     public void Record()
     {
+        if ( _isTimeback )
+            return;
         GameRecordIndex++;
         if ( GameRecordTimes.ContainsKey(GameRecordIndex) )
             GameRecordTimes[GameRecordIndex] = GameTime;
@@ -103,7 +106,8 @@ public class TimeBackManager :IUpdate
     {
         if(!_isTimeback)
         {
-                    Debug.Log($"StartBack!{GameRecordIndex}");
+            Debug.Log($"StartBack!{GameRecordIndex}");
+            Time.timeScale = 2f;
             _isTimeback = true;
             _backTargetIndex = targetIndex;
             _backCurIndex = 0;

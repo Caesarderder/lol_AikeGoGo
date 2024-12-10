@@ -9,9 +9,16 @@ public class MonoManager : MonoBehaviour
 
     List<IUpdate> UpdateList=new();
 
+
+
+    [Header("ObjectPool")]
+    public List<SGoPool> gameParticles;
+
     void Awake()
     {
-        
+    }
+    private void Start()
+    {
     }
 
     public void Register(IUpdate update)

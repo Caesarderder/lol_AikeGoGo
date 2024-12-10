@@ -7,6 +7,7 @@ namespace FSM
     public class Combat : CoreComponent ,IAttackable
     {
         private Stats Stats;
+        public PlayerEntity player=>(PlayerEntity) Entity;
         [SerializeField]
         TriggerSense ts;
         Action<IAttackable> onAttack;
@@ -33,6 +34,7 @@ namespace FSM
         {
             if ( Mathf.Approximately(_uid, uid) ||!CanReceiveDamage)
                 return;
+            player.GoContainer.RestartParticle(4);
             _uid = uid;
             Stats.HealthChange(-damage);
         }

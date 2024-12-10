@@ -2,11 +2,15 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 namespace FSM
 {
     public class InterackFireAttackAction : InteractAction 
     {
         Transform player;
+
+        [SerializeField]
+        int particleIndex;
 
         public Transform checkPos;
         public string animationName;
@@ -35,8 +39,18 @@ namespace FSM
         }
         public override void OnAction(int index)
         {
-            base.OnAction(index);
-            EndAction();
+            base.OnAction(index);            
+            if(index==100)
+            {
+                var container = entity.GetComponentInChildren<GoContainer>();
+                if(container!=null)
+                {
+                    container.RestartParticle(particleIndex);
+                }
+            }    
+            else
+                EndAction();
+
             
         }
         public override void EndAction()

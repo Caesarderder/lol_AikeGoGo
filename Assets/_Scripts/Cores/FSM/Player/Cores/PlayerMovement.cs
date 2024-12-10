@@ -67,7 +67,7 @@ namespace FSM
             var speed = new Vector3(_curMoveSpeed, _gravitySpeed, 0f);
         }
 
-        bool _canMove=true;
+        public bool _canMove=true;
         public void MoveToTarget(Vector3 pos)
         {
             _controller.transform.position=pos;
@@ -107,7 +107,6 @@ namespace FSM
                 if ( _controller.transform.position.x < _failPos.position.x ) ;
                     //Debug.Log("ÓÎÏ·Ê§°Ü");
             }
-            _canMove = true;
 
             Animator.SetFloat("Speed",_curMoveSpeed/6);
         }
@@ -214,6 +213,17 @@ namespace FSM
 
 
 
+        }
+        public void ResetCamera()
+        {
+            var pos = Camera.main.transform.position;
+
+            Camera.main.transform.position = new Vector3(
+                Player.transform.position.x,
+                pos.y,
+pos.z
+
+                );
         }
 
         public override void SetTargetPos(Vector2 targetPos)

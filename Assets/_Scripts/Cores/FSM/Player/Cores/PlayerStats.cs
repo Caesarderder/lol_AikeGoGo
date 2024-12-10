@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.Events;
+using static UnityEngine.Rendering.DebugUI;
 
 namespace FSM
 {
@@ -8,6 +9,7 @@ namespace FSM
         public float curSp;
         float MaxSp;
         PlayerEntity player=>(PlayerEntity)Entity;
+        GoContainer gos;
         float _spRecoverSpeed;
         protected override void Awake()
         {
@@ -27,6 +29,7 @@ namespace FSM
                 cur=curSp,
                 max=MaxSp
             });
+            gos = player.GoContainer;  
         }
         private void Update()
         {
@@ -41,6 +44,12 @@ namespace FSM
         public override void HealthChange(float value)
         {
             var old=CurHP;
+            if(!player.isDie&&CurHP+value<=0&&CheckIfCanSpell(player.Data.TimeBackSpCost)&&!player.PlayerTimeFrozen.IsFrozen)
+            {
+                SpChange(-player.Data.TimeBackSpCost);
+                DataModule.Resolve<GamePlayDM>().TimeBackManager.DoTimeBack(player.GetBackIndex());
+                return;
+            }
             base.HealthChange(value);
             EventAggregator.Publish(new SPlayerChangeHealth
             {
@@ -54,7 +63,7 @@ namespace FSM
         public void SpChange(float value)
         {
             var old=curSp;
-            curSp += Mathf.Clamp(0f,MaxSp,value) ;
+            curSp = Mathf.Clamp(curSp + value,0f, MaxSp) ;
             if ( old == curSp)
                 return;
             EventAggregator.Publish(new SPlayerChangeSp

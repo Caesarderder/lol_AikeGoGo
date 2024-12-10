@@ -47,23 +47,25 @@ public class Init : MonoBehaviour
         GContext.RegisterSingleton<AudioManager>(audioManager);
 
 
+
         GContext.RegisterSingleton<ActManager>();
         GContext.RegisterSingleton<InputManager>();
 
+        GContext.RegisterSingleton<ObjectPoolManager>();
         GContext.RegisterMoudle<InputDataModule>();
         GContext.RegisterMoudle<GameStatusDM>();
         GContext.RegisterMoudle<GamePlayDM>();
 
         Debug.Log("GContext register time:"+Time.time);
-        Manager<AudioManager>.Inst.PlaySoundEffect(EAudioEffectIndex.test1);
 
+        Manager<ObjectPoolManager>.Inst.InitGoPools(ResManager.MonoManager.gameParticles);
         #endregion
     }
 
     private void LoadMainAct()
     {
-        _=Manager<ActManager>.Inst.LoadAct<GameAct>();
-        _=Manager<UIManager>.Inst.ShowUI<GamePlayPanel>();
+        _=Manager<ActManager>.Inst.LoadAct<HomeAct>();
+        //_=Manager<UIManager>.Inst.ShowUI<HomePanelHomePanel>();
     }
 
     #endregion

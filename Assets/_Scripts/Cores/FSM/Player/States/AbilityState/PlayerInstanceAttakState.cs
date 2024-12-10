@@ -53,7 +53,7 @@ namespace FSM
         public override void Exit()
         {
             base.Exit();
-            movement.CanMove=true;
+            movement._canMove=true;
         }
 
         public override void PhysicsUpdate()
@@ -68,7 +68,21 @@ namespace FSM
             //CheckIfTransition();
         }
 
+        public override void AnimationFinishedTrigger(int i = 0)
+        {
+            if(i==0)
+            {
+            isAbilityDone = true;
+
+            }
+            if ( i == 100 )
+                player.GoContainer.RestartParticle(0);
+               }
         
 
     }
+}
+public struct OnChangeCameraPos
+{
+public    Vector3 worldPos;
 }

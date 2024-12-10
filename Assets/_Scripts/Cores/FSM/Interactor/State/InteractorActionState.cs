@@ -52,7 +52,9 @@ namespace FSM
 
         public override void AnimationFinishedTrigger(int i = 0)
         {
-            base.AnimationFinishedTrigger();
+            //base.AnimationFinishedTrigger();
+            if(i==0)
+                isAbilityDone=true;
             Action.OnAction(i);
         }
     }

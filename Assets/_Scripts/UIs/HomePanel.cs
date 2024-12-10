@@ -7,18 +7,14 @@ using UnityEngine.UI;
 public class HomePanel : ViewBase
 {
     [SerializeField]
-    TMP_InputField if_num;
+    TMP_Text txt_history;
+
     [SerializeField]
     Button 
+        btn_desc,
+        btn_maker,
         btn_start
         ;
-
-    //UI打开时参数传递
-    public void Init(int num)
-    {
-        if_num.text = num.ToString();
-    }
-    
 
 #region Unity
 
@@ -33,15 +29,11 @@ public class HomePanel : ViewBase
     {
         base.Show();
 
-        if_num.onEndEdit.AddListener((x =>
-        {
-            DataModule.Resolve<TestDataModule>().OnTestDataChange(int.Parse(x));
-        }));
+        txt_history.text = "Max"+PlayerPrefs.GetInt("Score").ToString();
         btn_start.OnClickAsObservable().Subscribe(async x => {
             await Manager<UIManager>.Inst.ShowUI<GamePlayPanel>();  //动态加载GamePlayPanel
             _ = Manager<ActManager>.Inst.LoadAct<GameAct>();
-
-        });
+        }).AddTo(this);
 
 
     }
@@ -49,12 +41,12 @@ public class HomePanel : ViewBase
     public override void Destroy()
     {
         base.Destroy();
+        
     }
 
     public override void Hide()
     {
         base.Hide();
-        if_num.onEndEdit.RemoveAllListeners();
     }
 
     public override void Load()

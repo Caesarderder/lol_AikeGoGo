@@ -10,6 +10,8 @@ namespace FSM
 
         [SerializeField]
         TriggerSense sense;
+        [SerializeField]
+        int particleIndex;
 
         public Transform checkPos;
         public string animationName;
@@ -36,15 +38,24 @@ namespace FSM
          public override void OnAction(int index)
         {
             base.OnAction(index);
-            if(index==0)
+            if ( index == 0 )
             {
                 sense.AddHandler(OnTrigger, PlayerCheck);
                 _attackUid.Reset();
             }
-            else if(index==1)
+            else if ( index == 1 )
             {
                 EndAction();
             }
+            else if ( index == 100 )
+            {
+                var container = entity.GetComponentInChildren<GoContainer>();
+                if ( container != null )
+                {
+                    container.RestartParticle(particleIndex);
+                }
+            }
+           
         }
         public override void EndAction()
         {

@@ -1,8 +1,8 @@
 using UnityEngine;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 public class GameAct: ActBase
 {
-
     public override async Task OnLoad()
     {
         base.OnLoad();

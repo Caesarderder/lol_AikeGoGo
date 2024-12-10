@@ -1,9 +1,18 @@
+using DG.Tweening;
 using FSM;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class Drug : MonoBehaviour,ITimeBackable
 {
+    Transform player;
+    [SerializeField]
+    ParticleSystem particle;
+
+    [SerializeField]
+    Transform Sense,boomPos;
+    bool isSHow;
+
     //InstanceAttackTarget target;
     private void Awake()
     {
@@ -12,26 +21,48 @@ public class Drug : MonoBehaviour,ITimeBackable
         _isAlive=true;
         _lastState=true;
     }
+    private void Update()
+    {
+        if(!isSHow&&player!=null)
+        {
+            if(player.transform.position.x>Sense.transform.position.x)
+            {
+                isSHow = true;
+                particle.Stop();
+                particle.Play();
+            }
+        }
+    }
     private void Start()
     {
+        player=DataModule.Resolve<GamePlayDM>().GetPlayer().transform;
         _timeManager=DataModule.Resolve<GamePlayDM>().TimeBackManager;
         _timeManager.Register(this);
     }
     private void OnTriggerEnter(Collider other)
     {
-        var player=other.GetComponentInParent<PlayerEntity>();
-        if(player!=null)
+        if(!_isBack)
         {
 
-            SetState(false);
-            _timeManager.Record();
+            var player = other.GetComponentInParent<PlayerEntity>();
+            if ( player != null )
+            {
 
-            var index = _timeManager.GameRecordIndex;
-            if ( _timeRecords.ContainsKey(index) )
-                _timeRecords[index] = true;
-            else
-                _timeRecords.Add(index, true);
-            _lastState = _isAlive;
+                SetState(false);
+
+                var go = Manager<ObjectPoolManager>.Inst.GetGoFromPool(3).GetComponent<ParticlePool>();
+                go.Play(3, boomPos.position);
+
+
+                _timeManager.Record();
+
+                var index = _timeManager.GameRecordIndex;
+                if ( _timeRecords.ContainsKey(index) )
+                    _timeRecords[index] = true;
+                else
+                    _timeRecords.Add(index, true);
+                _lastState = _isAlive;
+            }
         }
     }
     private void OnEnable()
@@ -40,7 +71,6 @@ public class Drug : MonoBehaviour,ITimeBackable
     }
     private void OnDisable()
     {
-        //target.OnDisable();
     }
 
     void SetState(bool isActive)

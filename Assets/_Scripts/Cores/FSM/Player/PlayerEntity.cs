@@ -35,6 +35,8 @@ namespace FSM
         private Combat combat;
         public PlayerTimeFrozen PlayerTimeFrozen => playerTimeFrozen ? playerTimeFrozen : Core.GetCoreComponent<PlayerTimeFrozen>(ref playerTimeFrozen);
         private PlayerTimeFrozen playerTimeFrozen;
+        public GoContainer GoContainer => goContainer ? goContainer : Core.GetCoreComponent<GoContainer>(ref goContainer);
+        private GoContainer goContainer;
         
         //Data
         public PlayerDataSO Data=> EntityData as PlayerDataSO;
@@ -45,9 +47,12 @@ namespace FSM
         [HideInInspector]
         public PlayerInputHandler InputHandler;
 
+        EkkoTimeBackView view;
+
         protected override void Awake()
         {
             base.Awake();
+            view=GetComponentInChildren<EkkoTimeBackView>();
             var dm=DataModule.Resolve<GamePlayDM>();
             dm.SetPlayer(this);
             _timeManager = new TimeBackManager();
@@ -101,6 +106,7 @@ namespace FSM
         }
         public void TimeBackStart(int index)
         {
+            view.Enter();
             StateMachine.ChangeState(FoolState);
             Animator.speed=-0.5f;
             _isBack = true;
@@ -119,6 +125,7 @@ namespace FSM
         }
         public void TimeBackEnd(int index)
         {
+            view.Exit();
             StateMachine.ChangeState(isDie?FoolState:NormalState);
             Animator.speed=1f;
             _isBack = false;
@@ -154,7 +161,7 @@ namespace FSM
             }
 
         }
-        int GetBackIndex()
+        public int GetBackIndex()
         {
             var stap = _timeManager.BackIndex;
             var curIndex=_timeManager.GameRecordIndex-stap;
@@ -201,12 +208,18 @@ namespace FSM
             {
                 case EBuffType.Hp:
                     Stats.HealthChange(value);
+                    if ( value < 0 )
+                        GoContainer.RestartParticle(4);
+                    else
+                        GoContainer.RestartParticle(1);
                     break;
                 case EBuffType.Sp:
                     Stats.SpChange(value);
+                    goContainer.RestartParticle(2);
                     break;
                 case EBuffType.MoveSpeed:
                     Movement.VelocityAddation += value;
+                    goContainer.RestartParticle(3);
                     break;
                 default:
                     break;

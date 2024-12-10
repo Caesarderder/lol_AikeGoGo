@@ -15,6 +15,8 @@ namespace FSM
     public class InteractMeleeAttackAction:InteractAction 
     {
         Transform player;
+        [SerializeField]
+        int particleIndex;
 
         [SerializeField]
         TriggerSense sense;
@@ -47,7 +49,16 @@ namespace FSM
          public override void OnAction(int index)
         {
             base.OnAction(index);
-            EndAction();
+            if(index==100)
+            {
+                var container = entity.GetComponentInChildren<GoContainer>();
+                if(container!=null)
+                {
+                    container.RestartParticle(particleIndex);
+                }
+            }    
+            else
+                EndAction();
 
         }
         public override void EndAction()

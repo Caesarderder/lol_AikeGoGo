@@ -86,7 +86,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Stars:
-        m_Texture: {fileID: 2800000, guid: 584c81043fd0c4ddf90387b8d90e2786, type: 3}
+        m_Texture: {fileID: 2800000, guid: e66212ba82a71d14282428a900ecd4d5, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _Texture2DAsset_ed5845bdef6b4ba39ae420b153b33345_Out_0:
@@ -148,10 +148,10 @@ Material:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _Galaxy_Alt: {r: 0.8006115, g: 0, b: 4, a: 0}
-    - _Galaxy_Primary: {r: 0.015307976, g: 2.5359552, b: 3.2452831, a: 0}
-    - _Space_Dust: {r: 0.13207549, g: 0, b: 0.12835503, a: 0}
+    - _Galaxy_Alt: {r: 1.7015569, g: 0, b: 3.9999995, a: 0}
+    - _Galaxy_Primary: {r: 3.2452831, g: 0.016991045, b: 2.52766, a: 0}
+    - _Space_Dust: {r: 0.024046708, g: 0, b: 0.13333334, a: 0}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
-    - _Swirly_Nebular: {r: 0.043597728, g: 0.16037738, b: 0, a: 0}
+    - _Swirly_Nebular: {r: 0.08178161, g: 0, b: 0.16078432, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1

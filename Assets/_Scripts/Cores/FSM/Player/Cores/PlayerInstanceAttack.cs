@@ -10,12 +10,14 @@ namespace FSM
         private PlayerStats Stats;
         private PlayerInputHandler inputHandler;
         PlayerMovement movement;
+        PlayerTimeFrozen timeFrozen;
         bool _isAttack;
  
         protected override void Awake()
         {
             base.Awake();
             Player=GetComponentInParent<PlayerEntity>();
+            timeFrozen = Player.PlayerTimeFrozen;
             Stats = Player.Stats;
             inputHandler=GetComponentInParent<PlayerInputHandler>();
         }
@@ -28,6 +30,7 @@ namespace FSM
         {
             _isAttack = true;
             movement.CanMove = true;
+            timeFrozen.Enter();
             //player.Animator.SetTrigger(_animationName);
             EventAggregator.Subscribe<SInstanceAttackTarget>(ApplyAttack);
             EventAggregator.Publish(new SStartInstanceAttack());
@@ -37,6 +40,7 @@ namespace FSM
             _isAttack = false;
             EventAggregator.Unsubscribe<SInstanceAttackTarget>(ApplyAttack);
             EventAggregator.Publish(new SEndInstanceAttack());
+            timeFrozen.Exit();
             //movement.UseGravity = true;
             //movement.CanMove= true;
             Debug.Log("Exit");
@@ -44,6 +48,7 @@ namespace FSM
         void ApplyAttack(SInstanceAttackTarget evt)
         {
             Player.InstanceAttack(evt);
+            Player.Movement.ResetCamera();
             Exit();
         }
 

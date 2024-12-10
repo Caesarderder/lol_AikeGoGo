@@ -28,8 +28,10 @@ namespace FSM
         }
         public void Enter()
         {
+            if ( IsFrozen )
+                return;
             IsFrozen = true;
-            Time.timeScale = 0.1f;
+            Time.timeScale = 0.05f;
             //Player.Animator.speed = 10f;
 
             EventAggregator.Publish(new SChannelTimeFrozen()
@@ -37,30 +39,40 @@ namespace FSM
                 isEnter = true,
             });
         }
-        public void Exit()
+        public async void Exit()
         {
-            IsFrozen = false;
-            Time.timeScale = 1f;
-            //Player.Animator.speed = 1f;
-            EventAggregator.Publish(new SChannelTimeFrozen()
+            StartCoroutine(IEExit());
+        }
+
+        IEnumerator IEExit()
+        {
+            yield return new WaitForSeconds(0.04f);
+            if(IsFrozen)
             {
-                isEnter =false, 
-            });
+                IsFrozen = false;
+                Time.timeScale = 1f;
+                //Player.Animator.speed = 1f;
+                EventAggregator.Publish(new SChannelTimeFrozen()
+                {
+                    isEnter = false,
+                });
+
+            }
         }
 
         public override void LogicUpdate()
         {
             base.LogicUpdate();
-            if(inputHandler.Spell3)
-            {
-                if(IsFrozen)
-                {
-                    Exit();
-                }
-                else
-                    Enter();
-                inputHandler.Spell3 = false;
-            }
+            //if(inputHandler.Spell3)
+            //{
+            //    if(IsFrozen)
+            //    {
+            //        Exit();
+            //    }
+            //    else
+            //        Enter();
+            //    inputHandler.Spell3 = false;
+            //}
         }
 
         public override void PhysicsUpdate()

@@ -16,24 +16,57 @@ public class MapManager : MonoBehaviour,ITimeBackable
     Transform destoryPos;
 
     #region TimeBack
+    [SerializeField]
+    Transform ekkoTran;
+    [SerializeField]
+    LineRenderer lineRenderer;
+    [SerializeField]
+    Transform _recordTran;
+
+    Dictionary<int, Vector3> ekkoPos = new();
     bool _isBack;
     float _recordTimer;
     TimeBackManager _timeManager;
-
     public void TimeStateRecord(int index)
     {
+        if ( ekkoPos.ContainsKey(index) )
+            ekkoPos[index] = ekkoTran.InverseTransformPoint(_recordTran.transform.position);
+        else
+            ekkoPos.Add(index,ekkoTran.InverseTransformPoint(_recordTran.transform.position));
     }
-    public void TimeBackStart(int index) { 
-        _isBack = true;
-
-    }
-    public void TimeBackTick(int time)
+    public void TimeBackStart(int index)
     {
-
+        lineRenderer.positionCount = 0;
+        _isBack = true;
     }
+    public void TimeBackTick(int index)
+    {
+        if ( ekkoPos.ContainsKey(index) )
+        {
+            ekkoPos.Remove(index);
+        }
+    }
+
     public void TimeBackEnd(int index)
     {
         _isBack = false;
+        RenderLine();
+    }
+    void RenderLine()
+    {
+        //在玩家右边的不记录，超出5米的不渲染
+        var playerPos=_player.transform.position;
+        var list=ekkoPos.Where(x => GetWorldPos(x.Value).x <= playerPos.x && GetWorldPos(x.Value).x > (playerPos.x - 10)).Select(x=>(x.Key,x.Value)).ToList();
+        //list.;
+        //list.Insert(0,(0,_recordTran.position));
+        list.Reverse();
+
+        lineRenderer.positionCount = list.Count;
+        lineRenderer.SetPositions(list.Select(x=>GetWorldPos(x.Value)).ToArray());
+    }
+    Vector3 GetWorldPos(Vector3 local)
+    {
+        return ekkoTran.TransformPoint(local);
     }
 
     #endregion
@@ -77,10 +110,9 @@ public class MapManager : MonoBehaviour,ITimeBackable
 
     void MapTick()
     {
-
-        if(!_isBack)
+        if ( !_isBack)
         {
-
+            RenderLine();
             if ( blocks[0].CurPos < destoryPos.position.x )
             {
                 blocks[0].SelfDestory();
@@ -96,6 +128,8 @@ public class MapManager : MonoBehaviour,ITimeBackable
             {
                 block.Tick(moveSpeed);
             }
+
+            ekkoTran.position -=Vector3.right* moveSpeed * Time.deltaTime;
         }
     }
 

@@ -3,7 +3,6 @@ using UnityEngine.UIElements;
 
 public class BPlayer : Player
 {
-    private BagManager bagManager;  // ����һ��˽���ֶ� bagManager
 
     private float lastClickTime = 0f;  // ��һ�ε����ʱ��
     private float doubleClickThreshold = 0.3f;  // ˫����������ʱ�䣨��λ���룩
