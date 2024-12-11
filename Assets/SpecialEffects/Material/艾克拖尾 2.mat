@@ -16,8 +16,8 @@ Material:
   - _KEYWORD1_R
   - _KEYWORD2_A
   - _KEYWORD3_OFF
-  - _KEYWORD4_A
-  - _KEYWORD5_OFF
+  - _KEYWORD4_R
+  - _KEYWORD5_ON
   - _KEYWORD6_ON
   - _KEYWORD7_OFF
   - _KEYWORD8_ADD
@@ -57,11 +57,11 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _FujiaTex:
-        m_Texture: {fileID: 2800000, guid: 5e1cacb08625e5743925a1300efd7ce0, type: 3}
-        m_Scale: {x: 1, y: 1}
+        m_Texture: {fileID: 2800000, guid: 3584f2bf4afb5284d91edb6a29126e62, type: 3}
+        m_Scale: {x: 3.51, y: 0.95}
         m_Offset: {x: 0, y: 0}
     - _Gradienttex:
-        m_Texture: {fileID: 0}
+        m_Texture: {fileID: 2800000, guid: 5e1cacb08625e5743925a1300efd7ce0, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
@@ -94,7 +94,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _dissolvetex:
         m_Texture: {fileID: 0}
-        m_Scale: {x: 1, y: 1}
+        m_Scale: {x: 4.27, y: 0.87}
         m_Offset: {x: 0, y: 0}
     - _flowmaptex:
         m_Texture: {fileID: 0}
@@ -102,7 +102,7 @@ Material:
         m_Offset: {x: 0, y: 0}
     - _maintex:
         m_Texture: {fileID: 2800000, guid: 10a22c0de0d4c2f49937a07a6acfd0a9, type: 3}
-        m_Scale: {x: 0.6, y: 0.91}
+        m_Scale: {x: 4.95, y: 0.79}
         m_Offset: {x: 0, y: 0}
     - _noise:
         m_Texture: {fileID: 2800000, guid: 3584f2bf4afb5284d91edb6a29126e62, type: 3}
@@ -157,11 +157,11 @@ Material:
     - _Float11: 0
     - _Float12: 0
     - _Float13: 0
-    - _Float14: 1
-    - _Float15: 1
+    - _Float14: 2.46
+    - _Float15: 1.34
     - _Float16: 0
-    - _Float17: 0
-    - _Float18: 1
+    - _Float17: 0.069
+    - _Float18: 0.47
     - _Float19: 1
     - _Float2: 0
     - _Float20: 0
@@ -174,11 +174,11 @@ Material:
     - _Float31: 0
     - _Float32: 0
     - _Float33: 0
-    - _Float34: 1
+    - _Float34: 0.53
     - _Float35: 0
     - _Float36: 1
-    - _Float37: 1
-    - _Float38: 0
+    - _Float37: 1.06
+    - _Float38: -1.54
     - _Float39: 0.46
     - _Float4: 0
     - _Float40: 0
@@ -187,12 +187,12 @@ Material:
     - _Float43: 3.48
     - _Float44: 0
     - _Float45: 0
-    - _Float46: 0
-    - _Float47: 0.46
+    - _Float46: -1.12
+    - _Float47: 0.17
     - _Float5: 0
-    - _Float6: 0
+    - _Float6: 0.4
     - _Float8: 0.5
-    - _Float9: 0.53
+    - _Float9: 1.22
     - _GlossMapScale: 0
     - _Glossiness: 0
     - _GlossyReflections: 0
@@ -200,8 +200,8 @@ Material:
     - _Keyword1: 1
     - _Keyword2: 1
     - _Keyword3: 0
-    - _Keyword4: 1
-    - _Keyword5: 0
+    - _Keyword4: 0
+    - _Keyword5: 1
     - _Keyword6: 1
     - _Keyword7: 4
     - _Keyword8: 0
@@ -224,20 +224,20 @@ Material:
     m_Colors:
     - _BaseColor: {r: 1, g: 1, b: 1, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
-    - _Color0: {r: 1.2225066, g: 1.6794028, b: 7.532221, a: 1}
-    - _Color1: {r: 1, g: 1, b: 1, a: 1}
-    - _Color2: {r: 0.3105449, g: 0.53528064, b: 0.74813086, a: 0}
+    - _Color0: {r: 0.36743775, g: 0.5703647, b: 3.8989222, a: 1}
+    - _Color1: {r: 6.589843, g: 2.9028516, b: 0.9946933, a: 1}
+    - _Color2: {r: 6.2900686, g: 1.6244994, b: 0, a: 0}
     - _Color3: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
-    - _Vector0: {r: -1.11, g: -0.7, b: 0, a: 0}
-    - _Vector1: {r: -1.55, g: -0.27, b: 0, a: 0}
-    - _Vector2: {r: 0, g: 0, b: 0, a: 0}
+    - _Vector0: {r: -0.97, g: -0.92, b: 0, a: 0}
+    - _Vector1: {r: -0.71, g: -0.27, b: 0, a: 0}
+    - _Vector2: {r: 0, g: -0.57, b: 0, a: 0}
     - _Vector3: {r: 0, g: 0, b: 0, a: 0}
     - _Vector4: {r: 0, g: 0, b: 0, a: 0}
     - _Vector5: {r: 0, g: 0, b: 0, a: 0}
     - _Vector6: {r: 0, g: 0, b: 0, a: 0}
-    - _Vector7: {r: 0, g: 0, b: 0, a: 0}
+    - _Vector7: {r: 0, g: 0.57, b: 0, a: 0}
     - _speed1: {r: 0, g: 0, b: 0, a: 0}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
