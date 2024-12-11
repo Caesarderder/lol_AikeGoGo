@@ -50,6 +50,10 @@ namespace FSM
             base.LogicUpdate();
         }
 
+        private void Update()
+        {
+        }
+
         public override void HorizontalMove()
         {
             var lastMoveState = IsMoving;

@@ -48,6 +48,7 @@ namespace FSM
             {
                 SpChange(-player.Data.TimeBackSpCost);
                 DataModule.Resolve<GamePlayDM>().TimeBackManager.DoTimeBack(player.GetBackIndex());
+                player.GoContainer.PlayAudioClip(2);
                 return;
             }
             base.HealthChange(value);
@@ -59,6 +60,19 @@ namespace FSM
             });
 
         }    
+
+        public bool CheckIfDoTimeBack()
+        {
+            if(!player.isDie&&CheckIfCanSpell(player.Data.TimeBackSpCost)&&!player.PlayerTimeFrozen.IsFrozen)
+            {
+                SpChange(-player.Data.TimeBackSpCost);
+                DataModule.Resolve<GamePlayDM>().TimeBackManager.DoTimeBack(player.GetBackIndex());
+
+                player.GoContainer.PlayAudioClip(2);
+                return true;
+            }
+                return false;
+        }
 
         public void SpChange(float value)
         {

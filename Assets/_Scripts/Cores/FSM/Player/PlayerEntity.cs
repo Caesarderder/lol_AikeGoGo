@@ -59,10 +59,10 @@ namespace FSM
             dm.TimeBackManager = _timeManager;
             ResManager.MonoManager.Register(dm.TimeBackManager);
             dm.TimeBackManager.Register(this);
+            Animator = GetComponentInChildren<Animator>();
         }
         private void Start()
         {
-            Animator = GetComponentInChildren<Animator>();
             InputHandler = GetComponent<PlayerInputHandler>();
             NormalState=new PlayerNormalState(this,this,"s_Normal");
             CrouchState = new PlayerCrouchState(this,NormalState,this, "Crouch");
@@ -72,8 +72,20 @@ namespace FSM
             //CombatState = new PlayerCombatState(this, NormalState,"s_Combat");
             StateMachine =new StateMachine();
             StateMachine.Init(NormalState);
+
+            EventAggregator.Subscribe<SPlayAudio>(PlayAudio);
         }
 
+        void PlayAudio(SPlayAudio audio)
+        {
+            GoContainer.PlayAudioClip(audio.type);
+
+        }
+        private void OnDestroy()
+        {
+            ResManager.MonoManager.UnRegister(_timeManager);
+            EventAggregator.Unsubscribe<SPlayAudio>(PlayAudio);
+        }
         #region TimeBack
 
         bool _isBack;
@@ -157,6 +169,8 @@ namespace FSM
                     Stats.SpChange(-Data.TimeBackSpCost);
                     InputHandler.Spell1 = false;
                     DataModule.Resolve<GamePlayDM>().TimeBackManager.DoTimeBack(GetBackIndex());
+
+                    GoContainer.PlayAudioClip(2);
                 }
             }
 
@@ -224,6 +238,8 @@ namespace FSM
                 default:
                     break;
             }
+                    goContainer.PlayAudioClip(1);
+
         }
     }
 

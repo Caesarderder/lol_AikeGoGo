@@ -19,7 +19,7 @@ public class Init : MonoBehaviour
         foreach ( GameObject go in _initGos ) {
             Destroy(go);
         }
-        await SceneManager.UnloadSceneAsync(SceneManager.GetSceneAt(1));
+        //await SceneManager.UnloadSceneAsync(SceneManager.GetSceneAt(1));
         await ContainerInit();
         _initGos.Add(gameObject);
         //if( !QuickStart ) 

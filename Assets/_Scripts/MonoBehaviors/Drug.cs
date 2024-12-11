@@ -48,6 +48,11 @@ public class Drug : MonoBehaviour,ITimeBackable
             if ( player != null )
             {
 
+                EventAggregator.Publish(new SPlayAudio()
+                {
+                    type = 0
+                });
+
                 SetState(false);
 
                 var go = Manager<ObjectPoolManager>.Inst.GetGoFromPool(3).GetComponent<ParticlePool>();
@@ -108,5 +113,10 @@ public class Drug : MonoBehaviour,ITimeBackable
     }
 
     #endregion
+
+}
+public struct SPlayAudio
+{
+    public int type;
 
 }

@@ -29,9 +29,8 @@ public class HomePanel : ViewBase
     {
         base.Show();
 
-        txt_history.text = "Max"+PlayerPrefs.GetInt("Score").ToString();
-        btn_start.OnClickAsObservable().Subscribe(async x => {
-            await Manager<UIManager>.Inst.ShowUI<GamePlayPanel>();  //动态加载GamePlayPanel
+        txt_history.text = "最多摧毁微光数量："+PlayerPrefs.GetInt("Score").ToString();
+        btn_start.OnClickAsObservable().Subscribe(x => {
             _ = Manager<ActManager>.Inst.LoadAct<GameAct>();
         }).AddTo(this);
 

@@ -47,7 +47,9 @@ namespace FSM
             attack.Attackable.ReceiveDamage(attackUid.value,data.NormalAttackDamage);
             movement.MoveToTarget(new Vector3(attack.pos.x,attack.pos.y,player.transform.position.z));
             player.Animator.SetTrigger("InstanceAttack");
+            player.GoContainer.PlayAudioClip(4);
             Stats.SpChange(-spCost);
+
 
         }
         public override void Exit()

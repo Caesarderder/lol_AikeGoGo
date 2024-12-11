@@ -6,6 +6,10 @@ public class GameAct: ActBase
     public override async Task OnLoad()
     {
         base.OnLoad();
+        var uiManager = Manager<UIManager>.Inst;
+
+        //º”‘ÿHomePanel
+        var panel = await uiManager.ShowUI<GamePlayPanel>();
     }
 
     public override void OnLoaded()
@@ -16,10 +20,12 @@ public class GameAct: ActBase
     public override void OnUnload()
     {
         base.OnUnload();
+        Manager<UIManager>.Inst.DestroyUI<GamePlayPanel>(); 
     }
 
     public override void OnUnloaded()
     {
         base.OnUnloaded();
+
     }
 }

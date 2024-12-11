@@ -71,8 +71,13 @@ public class MapManager : MonoBehaviour,ITimeBackable
 
     #endregion
 
+    Camera mainCamera;
+    Vector2 resolution;
     void Start()
     {
+            mainCamera = Camera.main;
+        resolution=mainCamera.pixelRect.size;
+
         _player = DataModule.Resolve<GamePlayDM>().GetPlayer();
         _timeManager= DataModule.Resolve<GamePlayDM>().TimeBackManager;
         _timeManager.Register(this);
@@ -106,6 +111,32 @@ public class MapManager : MonoBehaviour,ITimeBackable
     void Update()
     {
         MapTick();
+        FailCheck();
+    }
+
+    bool isFail=false;
+    void FailCheck()
+    {
+        if(!isFail&&!_isBack)
+        {
+            mainCamera = Camera.main;
+            var pos = mainCamera.WorldToScreenPoint(_player.transform.position);
+            if ( pos.x < 0f )
+            {
+                if ( _player.Stats.CheckIfDoTimeBack() )
+                {
+
+                }
+                else
+                {
+                    isFail = true;
+                    EventAggregator.Publish(new SGameOver());
+
+                }
+            }
+        }
+
+
     }
 
     void MapTick()
