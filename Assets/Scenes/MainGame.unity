@@ -663,8 +663,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _initGos:
   - {fileID: 1891086650}
-  - {fileID: 1378179224}
   - {fileID: 20835741}
+  ui: {fileID: 1378179224}
   QuickStart: 0
 --- !u!4 &7013092431869351903
 Transform:

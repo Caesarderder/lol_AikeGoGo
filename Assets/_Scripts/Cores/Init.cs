@@ -8,18 +8,20 @@ public class Init : MonoBehaviour
 
     [SerializeField]
     List<GameObject> _initGos;
+    [SerializeField]
+    GameObject ui;
 
     public bool QuickStart=false;
 
     #region Methods
     public async void Awake()
     {
-        await SceneManager.UnloadSceneAsync(SceneManager.GetSceneAt(1));
-        await ContainerInit();
-        _initGos.Add(gameObject);
         foreach ( GameObject go in _initGos ) {
             Destroy(go);
         }
+        await SceneManager.UnloadSceneAsync(SceneManager.GetSceneAt(1));
+        await ContainerInit();
+        _initGos.Add(gameObject);
         //if( !QuickStart ) 
         LoadMainAct();
     }
@@ -62,9 +64,10 @@ public class Init : MonoBehaviour
         #endregion
     }
 
-    private void LoadMainAct()
+    private async void LoadMainAct()
     {
-        _=Manager<ActManager>.Inst.LoadAct<HomeAct>();
+        await Manager<ActManager>.Inst.LoadAct<HomeAct>();
+        Destroy(ui);
         //_=Manager<UIManager>.Inst.ShowUI<HomePanelHomePanel>();
     }
 
